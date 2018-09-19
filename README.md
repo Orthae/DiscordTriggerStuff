@@ -1,9 +1,9 @@
 # Discord Trigger Stuff
 
-[English]()
+[English](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/en.md)
 
-[French]()
+[French](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/fr.md)
 
-[German]()
+[German](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/de.md)
 
-[Japanese]()
+[Japanese](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/ja.md)
