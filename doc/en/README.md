@@ -2,7 +2,7 @@
 Discord Trigger Stuff, DTS in short, is a application that allow you to broadcast triggers to a Discord or play then locally. It hold triggers separately from ACT but it require it to work. You can select which triggers you want broadcast to Discord and which ones you want to play locally. It also support importing and exporting existing triggers directly from ACT allowing for easy migration. 
 
 # Requirements
-1. Advance Combat Tracker with FF14 plugin installed.
+1. Advanced Combat Tracker with FF14 plugin installed.
 2. Java JRE 8u40 or newer. [You can get newest version of Java here](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 3. Discord API token for discord related functionality. [You can get API token here](https://discordapp.com/developers/applications/)
 4. VoiceRSS API token for Text To Speech. [You can get API token here](http://www.voicerss.org/personel)
