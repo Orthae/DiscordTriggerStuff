@@ -83,8 +83,8 @@ public class AddTriggerController {
     }
 
     private void comboBoxesInit(){
-        triggerTypeComboBox.getItems().addAll(LanguageData.getInstance().getMsg("tableTriggerPersonal"),
-                LanguageData.getInstance().getMsg("tableTriggerRaid"));
+        triggerTypeComboBox.getItems().addAll(LanguageData.getInstance().getMsg("TriggerTypePersonal"),
+                LanguageData.getInstance().getMsg("TriggerTypeRaid"));
         triggerTypeComboBox.getSelectionModel().select(0);
         triggerCategoryComboBox.getItems().add("Default");
         triggerCategoryComboBox.getSelectionModel().select(0);

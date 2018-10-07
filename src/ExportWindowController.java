@@ -23,12 +23,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ExportWindowController extends ImportExportBase {
+    //  Fields
     @FXML
     Label exportToLabel;
 
+    // Methods
     private void languageSetup() {
         clearFont();
-        if(Settings.getInstance().getLocale().equals(Language.Japanese)){
+        if (Settings.getInstance().getLocale().equals(Language.Japanese)) {
             japaneseFont();
         } else {
             westernFont();
@@ -38,19 +40,17 @@ public class ExportWindowController extends ImportExportBase {
         exportToLabel.setText(LanguageData.getInstance().getMsg("labelExportTo"));
     }
 
-    private void clearFont(){
+    private void clearFont() {
         exportToLabel.getStyleClass().remove("JapaneseFont");
         exportToLabel.getStyleClass().remove("WesternFont");
-
     }
 
-    private void japaneseFont(){
+    private void japaneseFont() {
         exportToLabel.getStyleClass().add("JapaneseFont");
     }
 
-    private void westernFont(){
+    private void westernFont() {
         exportToLabel.getStyleClass().add("WesternFont");
-
     }
 
     public void initialize() {
@@ -65,10 +65,9 @@ public class ExportWindowController extends ImportExportBase {
         alert.setHeaderText(null);
         alert.getButtonTypes().add(ButtonType.CANCEL);
         alert.showAndWait();
-        if(alert.getResult() == ButtonType.CANCEL){
-           return;
+        if (alert.getResult() == ButtonType.CANCEL) {
+            return;
         }
-        System.out.println(alert.getResult());
         Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
         try (BufferedReader br = new BufferedReader(new FileReader(actConfig.toFile()))) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -96,7 +95,6 @@ public class ExportWindowController extends ImportExportBase {
                                     break;
                             }
                             String category = trigger.getTriggerCategory().getValue();
-
                             String formattedTrigger = "<Trigger Active=\"True\" Regex=\"" + regEx + "\" SoundData=\"" + soundData + "\""
                                     + " enums.SoundType=\"" + soundType + "\"" + " CategoryRestrict=\"False\" Category=\"" + category + "\" TimerName=\"\" Tabbed=\"False\" />";
                             stringBuilder.append(formattedTrigger);
@@ -109,7 +107,8 @@ public class ExportWindowController extends ImportExportBase {
             bufferedWriter.write(stringBuilder.toString());
             bufferedWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertDialogs.exportExceptionDialog();
+            Logger.getInstance().log("Exporting to ACT failed, IO Exception");
         }
     }
 
@@ -188,7 +187,8 @@ public class ExportWindowController extends ImportExportBase {
                 alert.show();
             }
         } catch (ParserConfigurationException | TransformerException e) {
-            System.out.println("This should not happen");
+            AlertDialogs.exportExceptionDialog();
+            Logger.getInstance().log("Exporting triggers failed, this shouldn't happen");
         }
     }
 

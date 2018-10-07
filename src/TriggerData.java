@@ -18,34 +18,34 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 public class TriggerData {
-//  Singleton
-    private TriggerData(){
+    //  Singleton
+    private TriggerData() {
         loadTriggers();
     }
 
-    public static TriggerData getInstance(){
+    public static TriggerData getInstance() {
         return TriggerDataHolder.INSTANCE;
     }
 
     public static class TriggerDataHolder {
         public static final TriggerData INSTANCE = new TriggerData();
     }
-//  Fields
+
+    //  Fields
     private ObservableList<Trigger> triggersArray = FXCollections.observableArrayList();
     private final Path TRIGGER_XML_FILE = FileSystems.getDefault().getPath("triggers.xml");
 
-//  Getters
+    //  Getters
     public ObservableList<Trigger> getTriggersArray() {
-    return triggersArray;
-}
-
+        return triggersArray;
+    }
 
     //  Methods
-    public void addTrigger(Trigger trigger){
+    public void addTrigger(Trigger trigger) {
         triggersArray.add(trigger);
     }
 
-    public void deleteTrigger(Trigger trigger){
+    public void deleteTrigger(Trigger trigger) {
         triggersArray.remove(trigger);
     }
 
@@ -53,7 +53,7 @@ public class TriggerData {
         try {
             File xmlTrigger = TRIGGER_XML_FILE.toFile();
             if (!xmlTrigger.exists()) {
-                System.out.println("XML trigger file doesn't exist");
+                Logger.getInstance().log("XML Trigger file doesn't exist");
                 return;
             }
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -72,7 +72,7 @@ public class TriggerData {
                     int triggerDelay = Integer.parseInt(element.getElementsByTagName("TriggerDelay").item(0).getTextContent());
                     String warningSoundPath = element.getElementsByTagName("TriggerSoundData").item(0).getTextContent();
                     SoundType soundType;
-                    switch (element.getElementsByTagName("TriggerSoundType").item(0).getTextContent()){
+                    switch (element.getElementsByTagName("TriggerSoundType").item(0).getTextContent()) {
                         case "BEEP":
                             soundType = SoundType.BEEP;
                             break;
@@ -90,8 +90,11 @@ public class TriggerData {
                     triggersArray.add(new Trigger(isPersonal, triggerCategory, triggerName, triggerCommand, triggerDelay, soundType, warningSoundPath, isTriggerEnabled));
                 }
             }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            System.out.println("Error while loading triggers");
+        } catch (ParserConfigurationException | SAXException e) {
+            AlertDialogs.settingsLoadingExceptionDialog();
+            Logger.getInstance().log("XML error while reading trigger file");
+        } catch (IOException e) {
+            Logger.getInstance().log("IO Exception while loading triggers from file");
         }
     }
 
@@ -145,7 +148,7 @@ public class TriggerData {
             StreamResult result = new StreamResult(TRIGGER_XML_FILE.toFile());
             transformer.transform(source, result);
         } catch (ParserConfigurationException | TransformerException e) {
-            System.out.println("This should not happen");
+            Logger.getInstance().log("Error while saving trigger file, this shouldn't happen");
         }
     }
 }

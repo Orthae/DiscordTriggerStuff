@@ -11,7 +11,7 @@ import javafx.scene.layout.BorderPane;
 import java.util.function.UnaryOperator;
 
 public class ImportExportBase {
-//  FXML block
+    //  FXML block
     @FXML
     private Label topBarLabel;
     @FXML
@@ -45,20 +45,20 @@ public class ImportExportBase {
     private double xOffset = 0;
     private double yOffset = 0;
 
-//  Getters
-    public TableView<Trigger> getImportExportTable(){
+    //  Getters
+    public TableView<Trigger> getImportExportTable() {
         return importExportTable;
     }
 
-    public TableColumn<Trigger, Boolean> getImportExportColumn(){
+    public TableColumn<Trigger, Boolean> getImportExportColumn() {
         return importExportColumn;
     }
 
-    public Label getTopBarLabel(){
+    public Label getTopBarLabel() {
         return topBarLabel;
     }
 
-//  Methods
+    //  Methods
     private void windowMoving() {
         topLabelPane.setOnMousePressed(event -> {
             xOffset = topLabelPane.getScene().getWindow().getX() - event.getScreenX();
@@ -71,11 +71,11 @@ public class ImportExportBase {
         });
     }
 
-    public void cancelButton(){
+    public void cancelButton() {
         cancelButton.getScene().getWindow().hide();
     }
 
-    private void tableInitialize(){
+    private void tableInitialize() {
         importExportTable.setEditable(true);
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setCellValueFactory(param -> param.getValue().getTriggerName());
@@ -83,8 +83,8 @@ public class ImportExportBase {
         typeColumn.setCellValueFactory(param -> param.getValue().getPersonal());
         typeColumn.setCellFactory(param -> {
             ComboBox<String> comboBox = new ComboBox<>();
-            comboBox.getItems().add("Raid");
-            comboBox.getItems().add("Personal");
+            comboBox.getItems().add(LanguageData.getInstance().getMsg("TriggerTypeRaid"));
+            comboBox.getItems().add(LanguageData.getInstance().getMsg("TriggerTypePersonal"));
             TableCell<Trigger, Boolean> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(Boolean item, boolean empty) {
@@ -119,7 +119,6 @@ public class ImportExportBase {
         delayColumn.setCellFactory(param -> {
             Spinner<Integer> spinner = new Spinner<>();
             spinner.setEditable(true);
-            //noinspection Duplicates
             UnaryOperator<TextFormatter.Change> filter = change -> {
                 String text = change.getText();
                 if (text.matches("[0-9]*")) {
@@ -129,23 +128,18 @@ public class ImportExportBase {
             };
             TextFormatter<String> textFormatter = new TextFormatter<>(filter);
             spinner.getEditor().setTextFormatter(textFormatter);
-            //noinspection UnnecessaryLocalVariable
-            TableCell<Trigger, Number> cell = new TableCell<>(){
+            return new TableCell<>() {
                 @Override
                 protected void updateItem(Number item, boolean empty) {
-                        if(empty){
-                            setGraphic(null);
-                        } else {
-                            spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 300, item.intValue()));
-                            setGraphic(spinner);
-                        }
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 300, item.intValue()));
+                        setGraphic(spinner);
+                    }
                 }
             };
-
-            return cell;
         });
-
-
         soundColumn.setCellValueFactory(param -> param.getValue().getSoundData());
         soundColumn.setCellFactory(param -> {
             Button button = new Button();
@@ -201,9 +195,9 @@ public class ImportExportBase {
         importExportColumn.setMaxWidth(50);
     }
 
-    private void languageSetup(){
+    private void languageSetup() {
         clearFont();
-        if(Settings.getInstance().getLocale().equals(Language.Japanese)){
+        if (Settings.getInstance().getLocale().equals(Language.Japanese)) {
             japaneseFont();
         } else {
             westernFont();
@@ -220,7 +214,7 @@ public class ImportExportBase {
         fileButton.setText(LanguageData.getInstance().getMsg("buttonFile"));
     }
 
-    private void clearFont(){
+    private void clearFont() {
         cancelButton.getStyleClass().remove("JapaneseFont");
         cancelButton.getStyleClass().remove("WesternFont");
         actButton.getStyleClass().remove("JapaneseFont");
@@ -231,14 +225,14 @@ public class ImportExportBase {
         fileButton.getStyleClass().remove("WesternFont");
     }
 
-    private void westernFont(){
+    private void westernFont() {
         cancelButton.getStyleClass().add("WesternFont");
         actButton.getStyleClass().add("WesternFont");
         clipboardButton.getStyleClass().add("WesternFont");
         fileButton.getStyleClass().add("WesternFont");
     }
 
-    private void japaneseFont(){
+    private void japaneseFont() {
         cancelButton.getStyleClass().add("JapaneseFont");
         actButton.getStyleClass().add("JapaneseFont");
         clipboardButton.getStyleClass().add("JapaneseFont");
@@ -249,17 +243,5 @@ public class ImportExportBase {
         languageSetup();
         windowMoving();
         tableInitialize();
-
-
     }
-
-//  DONE
-
-
-
-
-
-
-
-
 }

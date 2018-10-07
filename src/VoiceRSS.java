@@ -51,7 +51,6 @@ public class VoiceRSS {
         saveSpeechToFile(textToSpeech);
     }
 
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void saveSpeechToFile(String textToSpeech) throws VoiceException {
         Path filePath;
@@ -74,7 +73,7 @@ public class VoiceRSS {
             fos.flush();
             fos.close();
         } catch (FileNotFoundException e) {
-            Logger.getInstance().log("FileNotFoundException ");
+            Logger.getInstance().log("FileNotFoundException while saving TTS file this should not happen");
         } catch (IOException e){
             throw new VoiceException(VoiceExceptionType.IO);
         }

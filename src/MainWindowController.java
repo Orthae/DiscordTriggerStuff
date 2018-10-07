@@ -1015,8 +1015,8 @@ public class MainWindowController {
         triggerTableColumnTriggerCommand.setCellValueFactory(param -> param.getValue().getTriggerCommand());
 
         tableSortingTypeComboBox.getItems().add(LanguageData.getInstance().getMsg("tableTriggerAll"));
-        tableSortingTypeComboBox.getItems().add(LanguageData.getInstance().getMsg("tableTriggerPersonal"));
-        tableSortingTypeComboBox.getItems().add(LanguageData.getInstance().getMsg("tableTriggerRaid"));
+        tableSortingTypeComboBox.getItems().add(LanguageData.getInstance().getMsg("TriggerTypePersonal"));
+        tableSortingTypeComboBox.getItems().add(LanguageData.getInstance().getMsg("TriggerTypeRaid"));
         tableSortingTypeComboBox.getSelectionModel().select(0);
 
         triggerTableColumnEnabled.setCellFactory(param -> {
@@ -1070,9 +1070,9 @@ public class MainWindowController {
                         setGraphic(null);
                     } else {
                         if (item) {
-                            label.setText(LanguageData.getInstance().getMsg("tableTriggerPersonal"));
+                            label.setText(LanguageData.getInstance().getMsg("TriggerTypePersonal"));
                         } else {
-                            label.setText(LanguageData.getInstance().getMsg("tableTriggerRaid"));
+                            label.setText(LanguageData.getInstance().getMsg("TriggerTypeRaid"));
                         }
                         setGraphic(label);
                     }

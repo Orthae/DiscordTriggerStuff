@@ -163,7 +163,7 @@ public class Settings {
             setTtsLanguage(document.getElementsByTagName("TTSLanguage").item(0).getTextContent());
             setClientID(document.getElementsByTagName("DiscordClientID").item(0).getTextContent());
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-        AlertDialogs.xmlReadingExceptionDialog();
+        AlertDialogs.settingsLoadingExceptionDialog();
         Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
         AlertDialogs.ioExceptionDialog();

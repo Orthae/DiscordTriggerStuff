@@ -95,7 +95,7 @@ public class ImportWindowController extends ImportExportBase {
                     String triggerCategory = element.getAttribute("Category");
                     int triggerDelay = 0;
                     SoundType soundType;
-                    switch (Integer.parseInt(element.getAttribute("enums.SoundType"))) {
+                    switch (Integer.parseInt(element.getAttribute("SoundType"))) {
                         case 0:
                         case 1:
                             soundType = SoundType.BEEP;

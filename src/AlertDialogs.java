@@ -84,11 +84,15 @@ public class AlertDialogs {
         }
     }
 
-    public static void xmlReadingExceptionDialog(){
+    public static void settingsLoadingExceptionDialog(){
         errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
     }
 
     public static void ioExceptionDialog(){
         errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+    }
+
+    public static void exportExceptionDialog(){
+        errorDialog(LanguageData.getInstance().getMsg("AlertExportFailed"));
     }
 }

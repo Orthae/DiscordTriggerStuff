@@ -17,7 +17,7 @@ public class Logger {
         public static final Logger INSTANCE = new Logger();
     }
 
-    private final Path LOG_PATH = Paths.get("dts_log.txt");;
+    private final Path LOG_PATH = Paths.get("dts_log.txt");
 
     public void log(String msgToLog){
         StringBuilder stringBuilder = new StringBuilder();
@@ -30,7 +30,6 @@ public class Logger {
         } catch (IOException e) {
             System.out.println("Could not log message, IO Exception thrown");
         }
-
     }
 
 
