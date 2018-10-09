@@ -62,10 +62,10 @@ public class LogReader {
 
     //  Methods
     public void stopThread() {
-        if(getDelayedTriggersThread() != null){
+        if(getTriggerThread() != null){
             getTriggerThread().isSearchActive = false;
         }
-        if(getTriggerThread() != null && getDelayedTriggersThread() != null){
+        if(getDelayedTriggersThread() != null){
             getDelayedTriggersThread().isSearchActive = false;
         }
     }
