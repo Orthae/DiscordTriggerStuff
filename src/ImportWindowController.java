@@ -68,7 +68,7 @@ public class ImportWindowController extends ImportExportBase {
             if (!importedTrigger.getEnabled().getValue()) {
                 continue;
             }
-            TriggerData.getInstance().addTrigger(importedTrigger);
+            Settings.getInstance().getTriggerList().add(importedTrigger);
         }
         importButton.getScene().getWindow().hide();
     }

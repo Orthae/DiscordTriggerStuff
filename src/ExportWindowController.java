@@ -193,7 +193,7 @@ public class ExportWindowController extends ImportExportBase {
     }
 
     private void getTriggers() {
-        for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+        for (Trigger trigger : Settings.getInstance().getTriggerList()) {
             getImportExportTable().getItems().add(new Trigger(trigger));
         }
     }

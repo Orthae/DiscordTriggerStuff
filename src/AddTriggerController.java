@@ -310,7 +310,7 @@ public class AddTriggerController {
     }
 
     private void categorySetup() {
-        for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+        for (Trigger trigger : Settings.getInstance().getTriggerList()) {
             if (!triggerCategoryComboBox.getItems().contains(trigger.getTriggerCategory().getValue())) {
                 triggerCategoryComboBox.getItems().add(trigger.getTriggerCategory().getValue());
             }

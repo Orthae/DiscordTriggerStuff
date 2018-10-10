@@ -62,12 +62,12 @@ public class LogReader {
 
     //  Methods
     public void stopThread() {
-        if(getTriggerThread() != null){
-            getTriggerThread().isSearchActive = false;
-        }
-        if(getDelayedTriggersThread() != null){
-            getDelayedTriggersThread().isSearchActive = false;
-        }
+//        if(getTriggerThread() != null){
+//            getTriggerThread().isSearchActive = false;
+//        }
+//        if(getDelayedTriggersThread() != null){
+//            getDelayedTriggersThread().isSearchActive = false;
+//        }
     }
 
     public void startThread() {
@@ -116,7 +116,6 @@ public class LogReader {
     }
 
     public void findLogFile() {
-            stopThread();
         try (DirectoryStream<Path> logFiles = Files.newDirectoryStream(Paths.get(Settings.getInstance().getLogFolder()), "*.log")) {
             Path newestFilePath = null;
             int newestFile = 0;
@@ -164,7 +163,7 @@ public class LogReader {
         @Override
         public void run() {
             while (isSearchActive) {
-                if (TriggerData.getInstance().getTriggersArray() != null) {
+                if (Settings.getInstance().getTriggerList() != null) {
                     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(getLogFilePath().toFile()))) {
                         while (true) {
                             while (!isEnfOfFile) {
@@ -176,7 +175,8 @@ public class LogReader {
                             }
                             if (bufferedReader.ready()) {
                                 String logFileLine = bufferedReader.readLine();
-                                for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+                                 for (Trigger trigger : Settings.getInstance().getTriggerList()) {
+                                     System.out.println(Settings.getInstance().getTriggerList().size());
                                     if(trigger.getEnabled().getValue()){
                                         if (logFileLine.matches(".*" + trigger.getTriggerCommand().getValue() + ".*")) {
                                             if (trigger.getTriggerDelay().getValue() != 0) {
@@ -191,7 +191,7 @@ public class LogReader {
                                 if(!isSearchActive){
                                     break;
                                 }
-                                Thread.sleep(250);
+                                Thread.sleep(1);
                             }
                         }
                     } catch (IOException | InterruptedException e) {

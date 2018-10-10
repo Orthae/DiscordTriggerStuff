@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.List;
+import java.util.Set;
 
 
 public class MainWindowController {
@@ -437,14 +438,14 @@ public class MainWindowController {
             tableSortingCategoryComboBox.getItems().add(LanguageData.getInstance().getMsg("tableTriggerAll"));
             switch (newValue.intValue()) {
                 case 0:
-                    for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+                    for (Trigger trigger : Settings.getInstance().getTriggerList()) {
                         if (!tableSortingCategoryComboBox.getItems().contains(trigger.getTriggerCategory().getValue())) {
                             tableSortingCategoryComboBox.getItems().add(trigger.getTriggerCategory().getValue());
                         }
                     }
                     break;
                 case 1:
-                    for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+                    for (Trigger trigger : Settings.getInstance().getTriggerList()) {
                         if (trigger.getPersonal().getValue()) {
                             if (!tableSortingCategoryComboBox.getItems().contains(trigger.getTriggerCategory().getValue())) {
                                 tableSortingCategoryComboBox.getItems().add(trigger.getTriggerCategory().getValue());
@@ -453,7 +454,7 @@ public class MainWindowController {
                     }
                     break;
                 case 2:
-                    for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+                    for (Trigger trigger : Settings.getInstance().getTriggerList()) {
                         if (!trigger.getPersonal().getValue()) {
                             if (!tableSortingCategoryComboBox.getItems().contains(trigger.getTriggerCategory().getValue())) {
                                 tableSortingCategoryComboBox.getItems().add(trigger.getTriggerCategory().getValue());
@@ -470,17 +471,17 @@ public class MainWindowController {
             ObservableList<Trigger> listCategory = FXCollections.observableArrayList();
             switch (tableSortingTypeComboBox.getSelectionModel().getSelectedIndex()) {
                 case 0:
-                    listType.addAll(TriggerData.getInstance().getTriggersArray());
+                    listType.addAll(Settings.getInstance().getTriggerList());
                     break;
                 case 1:
-                    for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+                    for (Trigger trigger : Settings.getInstance().getTriggerList()) {
                         if (trigger.getPersonal().getValue()) {
                             listType.add(trigger);
                         }
                     }
                     break;
                 case 2:
-                    for (Trigger trigger : TriggerData.getInstance().getTriggersArray()) {
+                    for (Trigger trigger : Settings.getInstance().getTriggerList()) {
                         if (!trigger.getPersonal().getValue()) {
                             listType.add(trigger);
                         }
@@ -505,9 +506,8 @@ public class MainWindowController {
     }
 
     public void quitButton() {
-        LogReader.getInstance().stopThread();
+//        LogReader.getInstance().stopThread();
         discordDisconnectButton.fire();
-        TriggerData.getInstance().saveTriggerData();
         Settings.getInstance().saveSettings();
         Stage stage = (Stage) quitButton.getScene().getWindow();
         stage.close();
@@ -871,9 +871,9 @@ public class MainWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogReader.getInstance().startThread();
+//        LogReader.getInstance().stopThread();
         importTriggerWindow.showAndWait();
-        LogReader.getInstance().startThread();
+//        LogReader.getInstance().startThread();
         reFiltering();
     }
 
@@ -909,7 +909,7 @@ public class MainWindowController {
         }
 
         for (Trigger trigger : triggerTableView.getSelectionModel().getSelectedItems()) {
-            TriggerData.getInstance().deleteTrigger(trigger);
+            Settings.getInstance().getTriggerList().remove(trigger);
         }
 
         triggerTableView.getSelectionModel().clearSelection();
@@ -930,13 +930,13 @@ public class MainWindowController {
         }
         AddTriggerController addTriggerController = fxmlLoader.getController();
         addTriggerController.basicWindowSetup();
-        LogReader.getInstance().stopThread();
+//        LogReader.getInstance().stopThread();
         addEditWindow.showAndWait();
-        LogReader.getInstance().startThread();
+//        LogReader.getInstance().startThread();
         Trigger newTrigger;
         if (addTriggerController.getNewTrigger() != null) {
             newTrigger = addTriggerController.getNewTrigger();
-            TriggerData.getInstance().addTrigger(newTrigger);
+            Settings.getInstance().getTriggerList().add(newTrigger);
         }
         reFiltering();
     }
@@ -1006,7 +1006,7 @@ public class MainWindowController {
     }
 
     private void tableSetup() {
-        triggerTableView.setItems(TriggerData.getInstance().getTriggersArray());
+        triggerTableView.setItems(Settings.getInstance().getTriggerList());
         triggerTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         triggerTableView.getSelectionModel().setCellSelectionEnabled(false);
         triggerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -1190,9 +1190,9 @@ public class MainWindowController {
         }
         AddTriggerController addTriggerController = fxmlLoader.getController();
         addTriggerController.editWindowSetup(triggerTableView.getSelectionModel().getSelectedItem());
-        LogReader.getInstance().stopThread();
+//        LogReader.getInstance().stopThread();
         addEditWindow.showAndWait();
-        LogReader.getInstance().startThread();
+//        LogReader.getInstance().startThread();
         reFiltering();
     }
 
