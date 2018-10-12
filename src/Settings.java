@@ -3,6 +3,7 @@ import enums.SoundType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -146,8 +147,11 @@ public class Settings {
         this.clientID = clientID;
     }
 
-//  Methods
 
+//  Methods
+//  Duplicates will happen due legacy setting support
+
+    @SuppressWarnings("Duplicates")
     private void loadOldSettingFile() {
         try {
             boolean error = false;
@@ -225,7 +229,8 @@ public class Settings {
                 error = true;
             }
             if (error) {
-//  TODO dialog file corrupted
+                Logger.getInstance().log("Old setting file is corrupted, some setting might have been lost.");
+                AlertDialogs.settingsLoadingExceptionDialog();
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
             AlertDialogs.settingsLoadingExceptionDialog();
@@ -236,6 +241,7 @@ public class Settings {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private void loadOldTriggers() {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -280,8 +286,10 @@ public class Settings {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private void loadSettings() {
         try {
+            boolean error = false;
             if (!SETTING_FILE.toFile().exists()) {
                 Logger.getInstance().log("Config file not found, attempting to find old setting file");
                 if (OLD_SETTING_FILE.toFile().exists()) {
@@ -303,6 +311,110 @@ public class Settings {
             Document document = dBuilder.parse(SETTING_FILE.toFile());
             document.normalize();
 
+            if (document.getElementsByTagName("LocalVolumeSlider").item(0) != null) {
+                setLocalPlayerVolume(Double.parseDouble(document.getElementsByTagName("LocalVolumeSlider").item(0).getTextContent()));
+            } else {
+                error = true;
+            }
+            if (document.getElementsByTagName("LocalVolumeMute").item(0) != null) {
+                setLocalPlayerMute(Boolean.parseBoolean(document.getElementsByTagName("LocalVolumeMute").item(0).getTextContent()));
+            } else {
+                error = true;
+            }
+
+            if (document.getElementsByTagName("DiscordVolumeSlider").item(0).getTextContent() != null) {
+                setDiscordPlayerVolume(Double.parseDouble(document.getElementsByTagName("DiscordVolumeSlider").item(0).getTextContent()));
+            } else {
+                error = true;
+            }
+            if (document.getElementsByTagName("DiscordVolumeMute").item(0) != null) {
+                setDiscordPlayerMute(Boolean.parseBoolean(document.getElementsByTagName("DiscordVolumeMute").item(0).getTextContent()));
+            } else {
+                error = true;
+            }
+
+            if (document.getElementsByTagName("DiscordToken").item(0) != null) {
+                setDiscordToken(document.getElementsByTagName("DiscordToken").item(0).getTextContent());
+            } else {
+                error = true;
+            }
+            if (document.getElementsByTagName("VoiceRRSToken").item(0) != null) {
+                setVoiceRRSToken(document.getElementsByTagName("VoiceRRSToken").item(0).getTextContent());
+            } else {
+                error = true;
+            }
+            if (document.getElementsByTagName("LogFolder").item(0) != null) {
+                setLogFolder(document.getElementsByTagName("LogFolder").item(0).getTextContent());
+            } else {
+                error = true;
+            }
+
+            if (document.getElementsByTagName("Language").item(0) != null) {
+                switch (document.getElementsByTagName("Language").item(0).getTextContent()) {
+                    case "English":
+                        setLocale(Language.English);
+                        break;
+                    case "French":
+                        setLocale(Language.French);
+                        break;
+                    case "German":
+                        setLocale(Language.German);
+                        break;
+                    case "Japanese":
+                        setLocale(Language.Japanese);
+                        break;
+                }
+            } else {
+                error = true;
+            }
+
+            if (document.getElementsByTagName("TTSLanguage").item(0) != null) {
+                setTtsLanguage(document.getElementsByTagName("TTSLanguage").item(0).getTextContent());
+            } else {
+                error = true;
+            }
+
+            if (document.getElementsByTagName("DiscordClientID").item(0) != null) {
+                setClientID(document.getElementsByTagName("DiscordClientID").item(0).getTextContent());
+            } else {
+                error = true;
+            }
+
+            if (error) {
+                Logger.getInstance().log("Old setting file is corrupted, some setting might have been lost.");
+                AlertDialogs.settingsLoadingExceptionDialog();
+            }
+
+            NodeList nList = document.getElementsByTagName("Trigger");
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nNode;
+                    boolean isPersonal = Boolean.parseBoolean(element.getElementsByTagName("TriggerIsPersonal").item(0).getTextContent());
+                    String triggerCategory = element.getElementsByTagName("TriggerCategory").item(0).getTextContent();
+                    String triggerName = element.getElementsByTagName("TriggerName").item(0).getTextContent();
+                    String triggerCommand = element.getElementsByTagName("TriggerCommand").item(0).getTextContent();
+                    int triggerDelay = Integer.parseInt(element.getElementsByTagName("TriggerDelay").item(0).getTextContent());
+                    String warningSoundPath = element.getElementsByTagName("TriggerSoundData").item(0).getTextContent();
+                    SoundType soundType;
+                    switch (element.getElementsByTagName("TriggerSoundType").item(0).getTextContent()) {
+                        case "BEEP":
+                            soundType = SoundType.BEEP;
+                            break;
+                        case "TTS":
+                            soundType = SoundType.TTS;
+                            break;
+                        case "SOUND_FILE":
+                            soundType = SoundType.SOUND_FILE;
+                            break;
+                        default:
+                            soundType = SoundType.BEEP;
+                            break;
+                    }
+                    boolean isTriggerEnabled = Boolean.parseBoolean(element.getElementsByTagName("TriggerIsEnabled").item(0).getTextContent());
+                    getTriggerList().add(new Trigger(isPersonal, triggerCategory, triggerName, triggerCommand, triggerDelay, soundType, warningSoundPath, isTriggerEnabled));
+                }
+            }
 
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
             AlertDialogs.settingsLoadingExceptionDialog();
@@ -317,17 +429,16 @@ public class Settings {
 
 
     public void saveSettings() {
-//  TODO UPDATE FOR NEW SETTINGS AND TRIGGERS
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // Root
+            // Root node
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("AppSettings");
+            Element rootElement = doc.createElement("DiscordTriggerStuff");
             doc.appendChild(rootElement);
 
-            //  Elements
+            //  Settings elements
             Element settings = doc.createElement("Settings");
             rootElement.appendChild(settings);
 
@@ -370,6 +481,48 @@ public class Settings {
             Element discordClientID = doc.createElement("DiscordClientID");
             discordClientID.appendChild(doc.createTextNode(getClientID()));
             settings.appendChild(discordClientID);
+
+            // Triggers
+            Element triggerList = doc.createElement("TriggerList");
+            rootElement.appendChild(triggerList);
+
+            for (Trigger aTrigger : getTriggerList()) {
+                Element trigger = doc.createElement("Trigger");
+                triggerList.appendChild(trigger);
+
+                Element isPersonal = doc.createElement("TriggerIsPersonal");
+                isPersonal.appendChild(doc.createTextNode(Boolean.toString(aTrigger.getPersonal().getValue())));
+                trigger.appendChild(isPersonal);
+
+                Element triggerCategory = doc.createElement("TriggerCategory");
+                triggerCategory.appendChild(doc.createTextNode(aTrigger.getTriggerCategory().getValue()));
+                trigger.appendChild(triggerCategory);
+
+                Element triggerName = doc.createElement("TriggerName");
+                triggerName.appendChild(doc.createTextNode(aTrigger.getTriggerName().getValue()));
+                trigger.appendChild(triggerName);
+
+                Element triggerCommand = doc.createElement("TriggerCommand");
+                triggerCommand.appendChild(doc.createTextNode(aTrigger.getTriggerCommand().getValue()));
+                trigger.appendChild(triggerCommand);
+
+                Element triggerDelay = doc.createElement("TriggerDelay");
+                triggerDelay.appendChild(doc.createTextNode(Integer.toString(aTrigger.getTriggerDelay().getValue())));
+                trigger.appendChild(triggerDelay);
+
+                Element soundType = doc.createElement("TriggerSoundType");
+                soundType.appendChild(doc.createTextNode(aTrigger.getSoundType().toString()));
+                trigger.appendChild(soundType);
+
+                Element warningSoundPath = doc.createElement("TriggerSoundData");
+                warningSoundPath.appendChild(doc.createTextNode(aTrigger.getSoundData().getValue()));
+                trigger.appendChild(warningSoundPath);
+
+                Element isTriggerEnabled = doc.createElement("TriggerIsEnabled");
+                isTriggerEnabled.appendChild(doc.createTextNode(Boolean.toString(aTrigger.getEnabled().getValue())));
+                trigger.appendChild(isTriggerEnabled);
+            }
+
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

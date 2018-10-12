@@ -43,12 +43,12 @@ public class SoundManager {
     }
 
     //  Setters
-    public void setLocalVolume(double volume) {
-        getLocalSoundManager().setVolume(volume);
+    public void updateLocalVolume() {
+        getLocalSoundManager().updateVolume();
     }
 
-    public void setDiscordVolume(double volume) {
-        getDiscordSoundManager().setVolume((float) volume);
+    public void updateDiscordVolume() {
+       getDiscordSoundManager().updateVolume();
     }
 
     //  Methods
@@ -157,16 +157,24 @@ public class SoundManager {
         }
 
         //  Setters
-        private void setVolume(float playerVolume) {
+        private void updateVolume() {
             if (getAudioPlayer() != null) {
-                getAudioPlayer().setVolume(playerVolume);
+                if(Settings.getInstance().isDiscordPlayerMute()){
+                    getAudioPlayer().setVolume(0);
+                } else {
+                    getAudioPlayer().setVolume((float) Settings.getInstance().getDiscordPlayerVolume() / 100);
+                }
             }
         }
 
         //  Methods
         private void createPlayer(IGuild guild) {
             this.audioPlayer = new AudioPlayer(guild);
-            getAudioPlayer().setVolume((float) Settings.getInstance().getDiscordPlayerVolume() / 100);
+            if(Settings.getInstance().isDiscordPlayerMute()){
+                getAudioPlayer().setVolume(0);
+            } else {
+                getAudioPlayer().setVolume((float) Settings.getInstance().getDiscordPlayerVolume() / 100);
+            }
         }
 
         private void clearPlayer() {
@@ -212,10 +220,13 @@ public class SoundManager {
         }
 
         //  Setters
-
-        private void setVolume(double volume) {
+        private void updateVolume() {
             if (getAudioPlayer() != null) {
-                getAudioPlayer().setVolume(volume);
+                if(Settings.getInstance().isLocalPlayerMute()){
+                    getAudioPlayer().setVolume(0);
+                } else {
+                    getAudioPlayer().setVolume(Settings.getInstance().getLocalPlayerVolume());
+                }
             }
         }
 
@@ -253,7 +264,11 @@ public class SoundManager {
 
         private void newPlayer(Media media) {
             this.audioPlayer = new MediaPlayer(media);
-            getAudioPlayer().setVolume(Settings.getInstance().getLocalPlayerVolume());
+            if(Settings.getInstance().isLocalPlayerMute()){
+                getAudioPlayer().setVolume(0);
+            } else {
+                getAudioPlayer().setVolume(Settings.getInstance().getLocalPlayerVolume());
+            }
             getAudioPlayer().play();
             getAudioPlayer().setOnEndOfMedia(() -> {
                 getAudioQueue().remove(0);

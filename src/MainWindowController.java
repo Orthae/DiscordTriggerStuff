@@ -31,7 +31,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.List;
-import java.util.Set;
 
 
 public class MainWindowController {
@@ -201,18 +200,18 @@ public class MainWindowController {
     private void actionListeners() {
         muteDiscordCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                SoundManager.getInstance().setDiscordVolume(0);
-                discordVolumeSlider.setDisable(true);
-                discordVolumeSliderTable.setDisable(true);
                 Settings.getInstance().setDiscordPlayerMute(true);
+                SoundManager.getInstance().updateDiscordVolume();
+                discordVolumeSlider.setDisable(true);
+                discordVolumeSliderTable.setDisable(true);;
                 if (!muteDiscordCheckBoxTable.isSelected()) {
                     muteDiscordCheckBoxTable.setSelected(true);
                 }
             } else {
-                discordVolumeSlider.setDisable(false);
-                SoundManager.getInstance().setDiscordVolume(discordVolumeSlider.getValue() / 100);
-                discordVolumeSliderTable.setDisable(false);
                 Settings.getInstance().setDiscordPlayerMute(false);
+                SoundManager.getInstance().updateDiscordVolume();
+                discordVolumeSlider.setDisable(false);
+                discordVolumeSliderTable.setDisable(false);
                 if (muteDiscordCheckBoxTable.isSelected()) {
                     muteDiscordCheckBoxTable.setSelected(false);
                 }
@@ -229,16 +228,16 @@ public class MainWindowController {
 
         muteLocalCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                SoundManager.getInstance().setLocalVolume(0);
                 localVolumeSlider.setDisable(true);
                 Settings.getInstance().setLocalPlayerMute(true);
+                SoundManager.getInstance().updateLocalVolume();
                 if (!muteLocalCheckBoxTable.isSelected()) {
                     muteLocalCheckBoxTable.setSelected(true);
                 }
             } else {
                 localVolumeSlider.setDisable(false);
-                SoundManager.getInstance().setLocalVolume(localVolumeSlider.getValue() / 100);
                 Settings.getInstance().setLocalPlayerMute(false);
+                SoundManager.getInstance().updateLocalVolume();
                 if (muteLocalCheckBoxTable.isSelected()) {
                     muteLocalCheckBoxTable.setSelected(false);
                 }
@@ -254,16 +253,16 @@ public class MainWindowController {
         });
 
         localVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            SoundManager.getInstance().setLocalVolume(newValue.doubleValue() / 100);
             Settings.getInstance().setLocalPlayerVolume(newValue.doubleValue());
+            SoundManager.getInstance().updateLocalVolume();
             localVolumeSliderTable.setValue(newValue.doubleValue());
         });
 
         localVolumeSliderTable.valueProperty().addListener((observable, oldValue, newValue) -> localVolumeSlider.setValue(newValue.doubleValue()));
 
         discordVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            SoundManager.getInstance().setDiscordVolume(newValue.doubleValue() / 100);
             Settings.getInstance().setDiscordPlayerVolume(newValue.doubleValue());
+            SoundManager.getInstance().updateDiscordVolume();
             discordVolumeSliderTable.setValue(newValue.doubleValue());
         });
 
@@ -995,9 +994,8 @@ public class MainWindowController {
 
 
     public void initialize() {
-        Logger.getInstance().log("testing new log");
-        loadSettings();
         actionListeners();
+        loadSettings();
         ttsComboBoxInit();
         tableSetup();
         languageSetup();
