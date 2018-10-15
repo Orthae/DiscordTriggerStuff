@@ -229,6 +229,7 @@ public class MainWindowController {
         muteLocalCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 localVolumeSlider.setDisable(true);
+                localVolumeSliderTable.setDisable(true);
                 Settings.getInstance().setLocalPlayerMute(true);
                 SoundManager.getInstance().updateLocalVolume();
                 if (!muteLocalCheckBoxTable.isSelected()) {
@@ -236,6 +237,7 @@ public class MainWindowController {
                 }
             } else {
                 localVolumeSlider.setDisable(false);
+                localVolumeSliderTable.setDisable(false);
                 Settings.getInstance().setLocalPlayerMute(false);
                 SoundManager.getInstance().updateLocalVolume();
                 if (muteLocalCheckBoxTable.isSelected()) {
