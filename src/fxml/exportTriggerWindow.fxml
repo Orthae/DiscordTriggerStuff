@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ExportWindowController"  maxWidth="800" minHeight="400">
+    <top>
+        <BorderPane fx:id="topLabelPane" styleClass="TopButtonBoxCenter">
+            <center>
+                <Label styleClass="TopLabel" fx:id="topBarLabel" text="STUFF" />
+            </center>
+        </BorderPane>
+    </top>
+    <center>
+        <VBox>
+        <BorderPane>
+            <left>
+                <HBox style="-fx-alignment: center">
+                    <Label fx:id="exportToLabel" text="EXPORT TO"/>
+                    <Button fx:id="actButton" onAction="#exportACT" text="ACT" />
+                    <Button fx:id="clipboardButton" onAction="#exportClipboard" text="CLIPBOARD"/>
+                    <Button fx:id="fileButton" onAction="#exportFile" text="FILE"/>
+                </HBox>
+            </left>
+            <right>
+                <HBox>
+                    <Button onAction="#cancelButton" fx:id="cancelButton" text="cancel"/>
+                </HBox>
+            </right>
+             </BorderPane>
+            <TableView fx:id="importExportTable" styleClass="TableStyle" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="NAME" />
+                    <TableColumn fx:id="typeColumn" text="TYPE" />
+                    <TableColumn fx:id="categoryColumn" text="CATEGORY" />
+                    <TableColumn fx:id="commandColumn" text="COMMAND" />
+                    <TableColumn  fx:id="delayColumn" text="DELAY"/>
+                    <TableColumn fx:id="soundColumn" text="SOUND" />
+                    <TableColumn fx:id="importExportColumn" text="EXPORT" />
+                </columns>
+            </TableView>
+
+        </VBox>
+    </center>
+
+  </BorderPane>
