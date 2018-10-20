@@ -220,7 +220,7 @@ public class SoundManager {
                 if (Settings.getInstance().isLocalPlayerMute()) {
                     getAudioPlayer().setVolume(0);
                 } else {
-                    getAudioPlayer().setVolume(Settings.getInstance().getLocalPlayerVolume());
+                    getAudioPlayer().setVolume(Settings.getInstance().getLocalPlayerVolume() / 100);
                 }
             }
         }
