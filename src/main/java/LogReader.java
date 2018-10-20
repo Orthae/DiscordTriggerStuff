@@ -179,7 +179,6 @@ public class LogReader {
                             if (bufferedReader.ready()) {
                                 String logFileLine = bufferedReader.readLine();
                                  for (Trigger trigger : Settings.getInstance().getTriggerList()) {
-                                     System.out.println(Settings.getInstance().getTriggerList().size());
                                     if(trigger.getEnabled().getValue()){
                                         if (logFileLine.matches(".*" + trigger.getTriggerCommand().getValue() + ".*")) {
                                             if (trigger.getTriggerDelay().getValue() != 0) {
@@ -203,7 +202,6 @@ public class LogReader {
                     }
                 }
             }
-            System.out.println("Thread 1 stopped");
         }
     }
 
@@ -242,7 +240,6 @@ public class LogReader {
                     e.getMessage();
                 }
             }
-            System.out.println("Thread 2 stopped");
         }
 
         //  Inner helper class
