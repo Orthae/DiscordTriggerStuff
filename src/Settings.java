@@ -106,18 +106,22 @@ public class Settings {
 
     public void setLocalPlayerVolume(double localPlayerVolume) {
         this.localPlayerVolume = localPlayerVolume;
+        SoundManager.getInstance().updateLocalVolume();
     }
 
     public void setLocalPlayerMute(boolean localPlayerMute) {
         this.localPlayerMute = localPlayerMute;
+        SoundManager.getInstance().updateLocalVolume();
     }
 
     public void setDiscordPlayerVolume(double discordPlayerVolume) {
         this.discordPlayerVolume = discordPlayerVolume;
+        SoundManager.getInstance().updateDiscordVolume();
     }
 
     public void setDiscordPlayerMute(boolean discordPlayerMute) {
         this.discordPlayerMute = discordPlayerMute;
+        SoundManager.getInstance().updateDiscordVolume();
     }
 
     public void setDiscordToken(String discordToken) {

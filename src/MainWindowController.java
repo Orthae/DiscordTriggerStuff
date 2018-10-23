@@ -201,7 +201,6 @@ public class MainWindowController {
         muteDiscordCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 Settings.getInstance().setDiscordPlayerMute(true);
-                SoundManager.getInstance().updateDiscordVolume();
                 discordVolumeSlider.setDisable(true);
                 discordVolumeSliderTable.setDisable(true);
                 if (!muteDiscordCheckBoxTable.isSelected()) {
@@ -209,7 +208,6 @@ public class MainWindowController {
                 }
             } else {
                 Settings.getInstance().setDiscordPlayerMute(false);
-                SoundManager.getInstance().updateDiscordVolume();
                 discordVolumeSlider.setDisable(false);
                 discordVolumeSliderTable.setDisable(false);
                 if (muteDiscordCheckBoxTable.isSelected()) {
@@ -231,7 +229,6 @@ public class MainWindowController {
                 localVolumeSlider.setDisable(true);
                 localVolumeSliderTable.setDisable(true);
                 Settings.getInstance().setLocalPlayerMute(true);
-                SoundManager.getInstance().updateLocalVolume();
                 if (!muteLocalCheckBoxTable.isSelected()) {
                     muteLocalCheckBoxTable.setSelected(true);
                 }
@@ -239,7 +236,6 @@ public class MainWindowController {
                 localVolumeSlider.setDisable(false);
                 localVolumeSliderTable.setDisable(false);
                 Settings.getInstance().setLocalPlayerMute(false);
-                SoundManager.getInstance().updateLocalVolume();
                 if (muteLocalCheckBoxTable.isSelected()) {
                     muteLocalCheckBoxTable.setSelected(false);
                 }
@@ -256,7 +252,6 @@ public class MainWindowController {
 
         localVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Settings.getInstance().setLocalPlayerVolume(newValue.doubleValue());
-            SoundManager.getInstance().updateLocalVolume();
             localVolumeSliderTable.setValue(newValue.doubleValue());
         });
 
@@ -264,7 +259,6 @@ public class MainWindowController {
 
         discordVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Settings.getInstance().setDiscordPlayerVolume(newValue.doubleValue());
-            SoundManager.getInstance().updateDiscordVolume();
             discordVolumeSliderTable.setValue(newValue.doubleValue());
         });
 
