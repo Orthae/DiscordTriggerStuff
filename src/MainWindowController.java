@@ -744,15 +744,6 @@ public class MainWindowController {
         ttsLanguageComboBox.getItems().add("Swedish (Sweden)");
     }
 
-    private void noItemSelectedError() {
-//  TODO move to AlertDialogs
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle(LanguageData.getInstance().getMsg("tableErrorTitle"));
-        alert.setContentText(LanguageData.getInstance().getMsg("tableErrorNoItemSelected"));
-        alert.showAndWait();
-    }
-
     public void activateTriggers() {
         for (Trigger trigger : triggerTableView.getSelectionModel().getSelectedItems()) {
             trigger.setEnabled(true);
@@ -821,6 +812,7 @@ public class MainWindowController {
             if (DiscordManager.getInstance().getDiscordClient() == null) {
                 Platform.runLater(() -> {
 //  TODO move to AlertDialogs
+//  Wait for creating proper error throwing for discord errors
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText(null);
                     alert.setContentText(DiscordManager.getInstance().getErrorMessage());
@@ -863,7 +855,7 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             importTriggerWindow.setScene(new Scene(root));
         } catch (IOException e) {
-//  TODO add alert pop up
+            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("IOException thrown while loading \"fxml/importTriggerWindow.fxml\"");
         }
         importTriggerWindow.showAndWait();
@@ -871,11 +863,11 @@ public class MainWindowController {
     }
 
     public void deleteTrigger() {
-//  TODO move to AlertDialogs
         if (triggerTableView.getSelectionModel().getSelectedItems().size() == 0) {
-            noItemSelectedError();
+            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
             return;
         }
+        //  TODO move to AlertDialogs
         if (triggerTableView.getSelectionModel().getSelectedItems() != null) {
             StringBuilder stringBuilder = new StringBuilder();
             int size = triggerTableView.getSelectionModel().getSelectedItems().size();
@@ -1165,7 +1157,6 @@ public class MainWindowController {
 
     public void editTriggerButton() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() > 1) {
-//  TODO move to AlertDialogs
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle(LanguageData.getInstance().getMsg("tableErrorTitle"));
@@ -1174,7 +1165,7 @@ public class MainWindowController {
             return;
         }
         if (triggerTableView.getSelectionModel().getSelectedItems().isEmpty()) {
-            noItemSelectedError();
+            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
             return;
         }
         Stage addEditWindow = new Stage();

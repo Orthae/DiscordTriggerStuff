@@ -108,7 +108,7 @@ public class ExportWindowController extends ImportExportBase {
             bufferedWriter.write(stringBuilder.toString());
             bufferedWriter.close();
         } catch (IOException e) {
-            AlertDialogs.exportExceptionDialog();
+            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("Exporting to ACT failed, IO Exception");
         }
     }
@@ -188,7 +188,7 @@ public class ExportWindowController extends ImportExportBase {
                 alert.show();
             }
         } catch (ParserConfigurationException | TransformerException e) {
-            AlertDialogs.exportExceptionDialog();
+            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
             Logger.getInstance().log("Exporting triggers failed, this shouldn't happen");
         }
     }
