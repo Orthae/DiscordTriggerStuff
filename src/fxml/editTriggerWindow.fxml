@@ -13,7 +13,7 @@
 
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
-<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddTriggerController">
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditTriggerController">
     <top>
          <BorderPane fx:id="topLabelPane" styleClass="TopButtonBoxCenter">
              <center>

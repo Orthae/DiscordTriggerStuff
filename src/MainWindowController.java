@@ -868,6 +868,7 @@ public class MainWindowController {
             return;
         }
         //  TODO move to AlertDialogs
+        // ShowAndWait dialog with int
         if (triggerTableView.getSelectionModel().getSelectedItems() != null) {
             StringBuilder stringBuilder = new StringBuilder();
             int size = triggerTableView.getSelectionModel().getSelectedItems().size();
@@ -915,14 +916,7 @@ public class MainWindowController {
             e.printStackTrace();
         }
         AddTriggerController addTriggerController = fxmlLoader.getController();
-        addTriggerController.basicWindowSetup();
         addEditWindow.showAndWait();
-//  TODO move it inside AddTriggerController
-        Trigger newTrigger;
-        if (addTriggerController.getNewTrigger() != null) {
-            newTrigger = addTriggerController.getNewTrigger();
-            Settings.getInstance().getTriggerList().add(newTrigger);
-        }
         reFiltering();
     }
 
@@ -960,22 +954,15 @@ public class MainWindowController {
                     URI link = new URI("https://discordapp.com/oauth2/authorize?client_id=" + Settings.getInstance().getClientID() + "&scope=bot");
                     Desktop.getDesktop().browse(link);
                 } else {
-//  TODO move to AlertDialogs
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle(LanguageData.getInstance().getMsg("AlertError"));
-                    alert.setHeaderText(null);
-                    alert.setContentText(LanguageData.getInstance().getMsg("errorClientID"));
-                    alert.show();
+                    AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertDiscordNoClientID"));
+                    Logger.getInstance().log("Couldn't add bot to Discord, ClientID is not specified");
                 }
             } catch (IOException | URISyntaxException e) {
-                //  TODO move to AlertDialogs
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(LanguageData.getInstance().getMsg("AlertError"));
-                alert.setHeaderText(null);
-                alert.setContentText(LanguageData.getInstance().getMsg("errorCouldntAddBot"));
-                alert.show();
+                AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot"));
+                Logger.getInstance().log("Couldn't add bot to Discord, " + e.getMessage());
             }
         }
+//  TODO add dialog, couldn't open web browser, and maybe allow to copy link
     }
 
     public void initialize() {
@@ -1156,6 +1143,7 @@ public class MainWindowController {
     }
 
     public void editTriggerButton() {
+//  TODO move to AlertDialogs
         if (triggerTableView.getSelectionModel().getSelectedItems().size() > 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
@@ -1168,21 +1156,21 @@ public class MainWindowController {
             AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
             return;
         }
-        Stage addEditWindow = new Stage();
-        addEditWindow.initOwner(appWindow.getScene().getWindow());
-        addEditWindow.initStyle(StageStyle.UNDECORATED);
+        Stage editWindow = new Stage();
+        editWindow.initOwner(appWindow.getScene().getWindow());
+        editWindow.initStyle(StageStyle.UNDECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("fxml/addTriggerWindow.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("fxml/editTriggerWindow.fxml"));
         try {
             Parent root = fxmlLoader.load();
-            addEditWindow.setScene(new Scene(root));
+            editWindow.setScene(new Scene(root));
         } catch (IOException e) {
 //  TODO add alert pop up
-            Logger.getInstance().log("Couldn't load \"fxml/addTriggerWindow.fxml\" IOException ");
+            Logger.getInstance().log("Couldn't load \"fxml/editTriggerWindow.fxml\" IOException ");
         }
-        AddTriggerController addTriggerController = fxmlLoader.getController();
-        addTriggerController.editWindowSetup(triggerTableView.getSelectionModel().getSelectedItem());
-        addEditWindow.showAndWait();
+        EditTriggerController editTriggerController = fxmlLoader.getController();
+        editTriggerController.editSetup(triggerTableView.getSelectionModel().getSelectedItem());
+        editWindow.showAndWait();
         reFiltering();
     }
 
@@ -1337,7 +1325,7 @@ public class MainWindowController {
     }
 
     private void clearFont() {
-        discordConnectLabel.getStyleClass().removeAll("JapaneseFont");
+        discordConnectLabel.getStyleClass().remove("JapaneseFont");
         discordConnectLabel.getStyleClass().remove("WesternFont");
         discordConnectButton.getStyleClass().remove("JapaneseFont");
         discordConnectButton.getStyleClass().remove("WesternFont");
@@ -1447,7 +1435,6 @@ public class MainWindowController {
         } else {
             westernFont();
         }
-
         discordConnectLabel.setText(LanguageData.getInstance().getMsg("mainLabelConnectToDiscord"));
         discordConnectButton.setText(LanguageData.getInstance().getMsg("mainButtonDiscordConnect"));
         discordDisconnectButton.setText(LanguageData.getInstance().getMsg("mainButtonDiscordDisconnect"));

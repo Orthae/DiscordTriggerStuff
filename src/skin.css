@@ -87,7 +87,6 @@
     -fx-min-width: 80;
     -fx-min-height: 30;
     -fx-font-size: 12;
-    /*-fx-font-family: Meiryo;*/
 
 }
 
@@ -265,10 +264,6 @@
     -fx-text-fill: RED;
 }
 
-.TextTest{
-    -fx-font-family: AngsanaUPC;
-}
-
 .ButtonWide {
     -fx-min-width: 165;
     -fx-min-height: 30;
@@ -276,7 +271,7 @@
 }
 
 .JapaneseFont{
-    -fx-font-family: "Meiryo";
+    -fx-font-family: 'Meiryo UI';
 }
 
 .WesternFont{
