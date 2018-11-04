@@ -29,13 +29,17 @@ public class LanguageData {
     public String getMsg(String key) {
         //  This will not be needed in Java9+ since it supports UTF-8 resource bundle
         String text;
-        try {
-            text = new String(messages.getString(key).getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            Logger.getInstance().log("UnsupportedEncodingException while getting text from resource bundle");
-            text = messages.getString(key);
+        if (System.getProperty("java.version").contains("1.8.")) {
+            try {
+                text = new String(messages.getString(key).getBytes("ISO-8859-1"), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                Logger.getInstance().log("UnsupportedEncodingException while getting text from resource bundle");
+                text = messages.getString(key);
+            }
+            return text;
+        } else {
+            return messages.getString(key);
         }
-        return text;
     }
 
     public void changeLanguage(Language language) {
