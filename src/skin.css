@@ -282,6 +282,15 @@
 .TopLabel {
     -fx-font-size: 18;
     -fx-text-fill: WHITE;
+
+}
+
+.TopLabelWestern{
+    -fx-font-family: Verdana;
+}
+
+.TopLabelJapanese{
+    -fx-font-family: 'Meiryo UI';
 }
 
 .LogStatusLabelGreen {

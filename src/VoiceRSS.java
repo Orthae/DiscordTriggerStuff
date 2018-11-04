@@ -34,38 +34,47 @@ public class VoiceRSS {
     private VoiceProvider voiceProvider;
     private VoiceParameters voiceParameters;
 
-    //  Methods
-    public void setAPIToken(String token) {
-        voiceProvider.setApiKey(token);
+    //  Getters
+    public VoiceProvider getVoiceProvider() {
+        return voiceProvider;
     }
 
-    public void requestTTS(String textToSpeech){
+    public VoiceParameters getVoiceParameters() {
+        return voiceParameters;
+    }
+
+    //  Methods
+    public void setAPIToken(String token) {
+        getVoiceProvider().setApiKey(token);
+    }
+
+    public void requestTTS(String textToSpeech) {
         try {
             saveSpeechToFile(textToSpeech);
         } catch (VoiceException e) {
-            Logger.getInstance().log("VoiceException " + e.getExceptionType());
+            Logger.getInstance().log("VoiceException thrown in requestTTS(String) method " + e.getExceptionType());
         }
     }
 
-    public void debugTTS(String textToSpeech) throws VoiceException{
+    public void debugTTS(String textToSpeech) throws VoiceException {
         saveSpeechToFile(textToSpeech);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void saveSpeechToFile(String textToSpeech) throws VoiceException {
         Path filePath;
-        try{
-            filePath = Paths.get("sounds/" + Settings.getInstance().getTtsLanguage() + "_" + textToSpeech.toLowerCase().trim().replaceAll(" ", "_") + ".wav");
-        } catch (InvalidPathException e){
+        try {
+            filePath = Paths.get(ReusedCode.getFormattedFilePath(textToSpeech));
+        } catch (InvalidPathException e) {
             throw new VoiceException(VoiceExceptionType.ILLEGAL_CHAR);
         }
         if (filePath.toFile().exists()) {
             return;
         }
-            byte[] voice = getTextToSpeech(textToSpeech);
-            if (!Paths.get("sounds").toFile().exists()) {
-               new File("sounds").mkdir();
-            }
+        byte[] voice = getTextToSpeech(textToSpeech);
+        if (!Paths.get("sounds").toFile().exists()) {
+            new File("sounds").mkdir();
+        }
         FileOutputStream fos;
         try {
             fos = new FileOutputStream(filePath.toFile());
@@ -74,49 +83,48 @@ public class VoiceRSS {
             fos.close();
         } catch (FileNotFoundException e) {
             Logger.getInstance().log("FileNotFoundException while saving TTS file this should not happen");
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new VoiceException(VoiceExceptionType.IO);
         }
     }
 
-    public byte[] getTextToSpeech(String textToSpeech) throws VoiceException{
-        voiceParameters.setText(textToSpeech);
-        voiceParameters.setLanguage(Settings.getInstance().getTtsLanguage());
+    public byte[] getTextToSpeech(String textToSpeech) throws VoiceException {
+        getVoiceParameters().setText(textToSpeech);
+        getVoiceParameters().setLanguage(Settings.getInstance().getTtsLanguage());
         byte[] voice;
         try {
-            voice = voiceProvider.speech(voiceParameters);
+            voice = getVoiceProvider().speech(getVoiceParameters());
         } catch (Exception e) {
-                String msg = e.getMessage();
-                if(msg.contains("The subscription is expired or requests count limitation is exceeded!")){
-                    throw new VoiceException(VoiceExceptionType.REQUEST_COUNT_EXCEEDED);
-                }
-                if (msg.contains("The request content length is too large!")){
-                    throw new VoiceException(VoiceExceptionType.REQUEST_TO_LARGE);
-                }
-                if (msg.contains("The language does not support!")){
-                    throw new VoiceException(VoiceExceptionType.LANGUAGE_NOT_SUPPORTED);
-                }
-                if (msg.contains("The language is not specified!")){
-                    throw new VoiceException(VoiceExceptionType.LANGUAGE_NOT_SPECIFIED);
-                }
-                if (msg.contains("The text is not specified!")){
-                    throw new VoiceException(VoiceExceptionType.TEXT_NOT_SPECIFIED);
-                }
-                if (msg.contains("The API key is not available!")){
-                    throw new VoiceException(VoiceExceptionType.API_KEY_NOT_AVAILABLE);
-                }
-                if (msg.contains("The API key is undefined")){
-                    throw new VoiceException(VoiceExceptionType.API_KEY_NOT_DEFINED);
-                }
-                if (msg.contains("The subscription does not support SSML!")){
-                    throw new VoiceException(VoiceExceptionType.SSML_NOT_SUPPORTED);
-                } else {
-                    throw new VoiceException(VoiceExceptionType.UNKNOWN);
-                }
+            String msg = e.getMessage();
+            if (msg.contains("The subscription is expired or requests count limitation is exceeded!")) {
+                throw new VoiceException(VoiceExceptionType.REQUEST_COUNT_EXCEEDED);
+            }
+            if (msg.contains("The request content length is too large!")) {
+                throw new VoiceException(VoiceExceptionType.REQUEST_TO_LARGE);
+            }
+            if (msg.contains("The language does not support!")) {
+                throw new VoiceException(VoiceExceptionType.LANGUAGE_NOT_SUPPORTED);
+            }
+            if (msg.contains("The language is not specified!")) {
+                throw new VoiceException(VoiceExceptionType.LANGUAGE_NOT_SPECIFIED);
+            }
+            if (msg.contains("The text is not specified!")) {
+                throw new VoiceException(VoiceExceptionType.TEXT_NOT_SPECIFIED);
+            }
+            if (msg.contains("The API key is not available!")) {
+                throw new VoiceException(VoiceExceptionType.API_KEY_NOT_AVAILABLE);
+            }
+            if (msg.contains("The API key is undefined")) {
+                throw new VoiceException(VoiceExceptionType.API_KEY_NOT_DEFINED);
+            }
+            if (msg.contains("The subscription does not support SSML!")) {
+                throw new VoiceException(VoiceExceptionType.SSML_NOT_SUPPORTED);
+            } else {
+                throw new VoiceException(VoiceExceptionType.UNKNOWN);
+            }
         }
         return voice;
     }
-
 }
 
 

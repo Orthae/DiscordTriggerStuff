@@ -12,14 +12,14 @@ public class AddTriggerController extends AddEditBase {
     @FXML
     private void addEditTriggerButton() {
         Trigger newTrigger = getFields();
-        if(newTrigger !=null){
+        if (newTrigger != null) {
             Settings.getInstance().getTriggerList().add(newTrigger);
             getTopBarLabel().getScene().getWindow().hide();
         }
     }
 
-    private void languageSetup(){
-        if(Settings.getInstance().getLocale() != Language.Japanese){
+    private void languageSetup() {
+        if (Settings.getInstance().getLocale() != Language.Japanese) {
             westernFont();
         } else {
             japaneseFont();
@@ -28,12 +28,13 @@ public class AddTriggerController extends AddEditBase {
         getCreateEditButton().setText(LanguageData.getInstance().getMsg("ButtonAddTriggerCreate"));
     }
 
-    private void westernFont(){
-
+    private void westernFont() {
+        getCreateEditButton().getStyleClass().add("WesternFont");
+        getTopBarLabel().getStyleClass().add("TopLabelWestern");
     }
 
-    private void japaneseFont(){
-
+    private void japaneseFont() {
+        getCreateEditButton().getStyleClass().add("JapaneseFont");
+        getTopBarLabel().getStyleClass().add("TopLabelJapanese");
     }
-
 }

@@ -1,14 +1,11 @@
 import enums.Language;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-
-import java.util.function.UnaryOperator;
 
 public class ImportExportBase {
     //  FXML block
@@ -115,30 +112,27 @@ public class ImportExportBase {
         categoryColumn.setCellValueFactory(param -> param.getValue().getTriggerCategory());
         categoryColumn.setMinWidth(120);
         delayColumn.setMaxWidth(75);
-        delayColumn.setCellValueFactory(param -> param.getValue().getTriggerDelay());
-        delayColumn.setCellFactory(param -> {
-            Spinner<Integer> spinner = new Spinner<>();
-            spinner.setEditable(true);
-            UnaryOperator<TextFormatter.Change> filter = change -> {
-                String text = change.getText();
-                if (text.matches("[0-9]*")) {
-                    return change;
+        delayColumn.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getTriggerDelay().getValue()) );
+        delayColumn.setCellFactory(param -> new TableCell<Trigger, Number>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Spinner<Integer> spinner = new Spinner<>();
+                    spinner.setEditable(true);
+                    TextFormatter<String> textFormatter = new TextFormatter<>(ReusedCode.SPINNER_FORMATTER);
+                    spinner.getEditor().setTextFormatter(textFormatter);
+                    spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 300, item.intValue()));
+                    spinner.getValueFactory().valueProperty().addListener(observable -> ((Trigger) getTableRow().getItem()).setTriggerDelay(spinner.valueProperty().get()));
+                    spinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                        if(!newValue){
+                            spinner.increment(0);
+                        }
+                    });
+                    setGraphic(spinner);
                 }
-                return null;
-            };
-            TextFormatter<String> textFormatter = new TextFormatter<>(filter);
-            spinner.getEditor().setTextFormatter(textFormatter);
-            return new TableCell<Trigger, Number>() {
-                @Override
-                protected void updateItem(Number item, boolean empty) {
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 300, item.intValue()));
-                        setGraphic(spinner);
-                    }
-                }
-            };
+            }
         });
         soundColumn.setCellValueFactory(param -> param.getValue().getSoundData());
         soundColumn.setCellFactory(param -> {
@@ -212,7 +206,7 @@ public class ImportExportBase {
         categoryColumn.setText(LanguageData.getInstance().getMsg("tableColumnCategory"));
         soundColumn.setText(LanguageData.getInstance().getMsg("tableColumnSound"));
         delayColumn.setText(LanguageData.getInstance().getMsg("tableColumnDelay"));
-        cancelButton.setText(LanguageData.getInstance().getMsg("cancelButton"));
+        cancelButton.setText(LanguageData.getInstance().getMsg("ButtonAddEditCancel"));
         actButton.setText(LanguageData.getInstance().getMsg("buttonACT"));
         clipboardButton.setText(LanguageData.getInstance().getMsg("buttonClipboard"));
         fileButton.setText(LanguageData.getInstance().getMsg("buttonFile"));

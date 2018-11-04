@@ -15,10 +15,10 @@ public class Main extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(root, 850, 500));
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
+        Logger.getInstance().log("Application started, inside main method");
         launch(args);
     }
 }

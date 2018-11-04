@@ -915,7 +915,6 @@ public class MainWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        AddTriggerController addTriggerController = fxmlLoader.getController();
         addEditWindow.showAndWait();
         reFiltering();
     }

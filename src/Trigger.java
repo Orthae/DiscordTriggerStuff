@@ -26,7 +26,7 @@ public class Trigger {
     }
 
     // Copy constructor
-    public Trigger(Trigger trigger){
+    public Trigger(Trigger trigger) {
         this.personal = new SimpleBooleanProperty(trigger.getPersonal().getValue());
         this.triggerCategory = new SimpleStringProperty(trigger.getTriggerCategory().getValue());
         this.triggerName = new SimpleStringProperty(trigger.getTriggerName().getValue());
@@ -114,7 +114,7 @@ public class Trigger {
     }
 
     //  Methods
-    public void runTrigger(){
+    public void runTrigger() {
         boolean isPersonal = getPersonal().getValue();
         String soundData = getSoundData().getValue();
         switch (getSoundType()) {
@@ -126,8 +126,7 @@ public class Trigger {
                 break;
             case TTS:
                 VoiceRSS.getInstance().requestTTS(soundData);
-                SoundManager.getInstance().play(isPersonal, Paths.get("sounds/" + Settings.getInstance().getTtsLanguage() + "_"
-                            + soundData.toLowerCase().trim().replaceAll(" ", "_") + ".wav"));
+                SoundManager.getInstance().play(isPersonal, Paths.get(ReusedCode.getFormattedFilePath(soundData)));
         }
     }
 
@@ -143,11 +142,8 @@ public class Trigger {
                 break;
             case TTS:
                 VoiceRSS.getInstance().debugTTS(soundData);
-                SoundManager.getInstance().playDebug(isPersonal, Paths.get("sounds/" + Settings.getInstance().getTtsLanguage() + "_"
-                        + soundData.toLowerCase().trim().replaceAll(" ", "_") + ".wav"));
+                SoundManager.getInstance().playDebug(isPersonal, Paths.get(ReusedCode.getFormattedFilePath(soundData)));
         }
-
     }
-
 }
 

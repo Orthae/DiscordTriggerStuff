@@ -192,6 +192,8 @@ public class SoundManager {
                 } catch (IOException e) {
                     throw new AudioException(AudioExceptionType.IO_DISCORD);
                 }
+            } else {
+                Logger.getInstance().log("No audio player in DiscordSoundManager class, this should not happen");
             }
         }
     }
@@ -291,5 +293,4 @@ public class SoundManager {
             }
         }
     }
-
 }

@@ -1,5 +1,5 @@
 package enums;
 
 public enum SoundType {
-    BEEP, SOUND_FILE, TTS
+    BEEP, SOUND_FILE, TTS;
 }

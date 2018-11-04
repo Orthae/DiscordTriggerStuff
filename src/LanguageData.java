@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 public class LanguageData {
     //Singleton
     private LanguageData() {
-        if(Settings.getInstance() == null){
+        if (Settings.getInstance() == null) {
             changeLanguage(Language.English);
         } else {
             changeLanguage(Settings.getInstance().getLocale());
@@ -27,10 +27,10 @@ public class LanguageData {
 
     //    Methods
     public String getMsg(String key) {
-//  This will not be needed in Java9+ since it supports UTF-8 resource bundle
+        //  This will not be needed in Java9+ since it supports UTF-8 resource bundle
         String text;
         try {
-            text = new String (messages.getString(key).getBytes("ISO-8859-1"), "UTF-8");
+            text = new String(messages.getString(key).getBytes("ISO-8859-1"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             Logger.getInstance().log("UnsupportedEncodingException while getting text from resource bundle");
             text = messages.getString(key);

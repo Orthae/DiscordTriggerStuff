@@ -16,6 +16,4 @@ public class AudioException extends Exception {
     public AudioExceptionType getExceptionType() {
         return exceptionType;
     }
-
-
 }

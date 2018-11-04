@@ -17,7 +17,7 @@
     <top>
          <BorderPane fx:id="topLabelPane" styleClass="TopButtonBoxCenter">
              <center>
-                 <Label fx:id="topBarLabel" text="STUFF" style="-fx-text-fill: WHITE"/>
+                 <Label fx:id="topBarLabel" text="STUFF" styleClass="TopLabel"/>
              </center>
          </BorderPane>
 

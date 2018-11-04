@@ -1,30 +1,28 @@
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Logger {
-    private Logger(){
-        }
+    private Logger() {
+    }
 
-    public static Logger getInstance(){
+    public static Logger getInstance() {
         return LoggerHolder.INSTANCE;
     }
 
-    public static class LoggerHolder{
+    public static class LoggerHolder {
         public static final Logger INSTANCE = new Logger();
     }
 
     private final Path LOG_PATH = Paths.get("dts_log.txt");
 
-    public void log(String msgToLog){
+    public void log(String msgToLog) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Calendar.getInstance().getTime().toString());
         stringBuilder.append(" | ");
         stringBuilder.append(msgToLog);
-        try (BufferedWriter bWriter = new BufferedWriter(new FileWriter(LOG_PATH.toFile(), true))){
+        try (BufferedWriter bWriter = new BufferedWriter(new FileWriter(LOG_PATH.toFile(), true))) {
             bWriter.append(stringBuilder);
             bWriter.newLine();
         } catch (IOException e) {

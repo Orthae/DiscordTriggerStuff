@@ -1,5 +1,5 @@
 package enums;
 
 public enum Language {
-    English, German, French, Japanese
+    English, German, French, Japanese;
 }
