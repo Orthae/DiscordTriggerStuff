@@ -1,6 +1,7 @@
 import com.voicerss.tts.Languages;
 import enums.Language;
 import exceptions.AudioException;
+import exceptions.DiscordException;
 import exceptions.VoiceException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -171,7 +172,7 @@ public class MainWindowController {
     private CheckBox muteDiscordCheckBox;
     @FXML
     private CheckBox muteLocalCheckBox;
-//    @FXML
+    //    @FXML
 //    private CheckBox tableDiscordPlaybackCheckBox;
     @FXML
     private CheckBox tokenCheckbox;
@@ -808,18 +809,15 @@ public class MainWindowController {
     public void discordLogIn() {
         Runnable discordLogin = () -> {
             discordConnectButton.setDisable(true);
-            DiscordManager.getInstance().logIn(Settings.getInstance().getDiscordToken());
-            if (DiscordManager.getInstance().getDiscordClient() == null) {
+            try {
+                DiscordManager.getInstance().logIn(Settings.getInstance().getDiscordToken());
+            } catch (DiscordException e) {
                 Platform.runLater(() -> {
-//  TODO move to AlertDialogs
-//  Wait for creating proper error throwing for discord errors
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText(null);
-                    alert.setContentText(DiscordManager.getInstance().getErrorMessage());
-                    alert.showAndWait();
+                    AlertDialogs.discordExceptionDialog(e.getExceptionType());
                     discordConnectButton.setDisable(false);
                 });
-            } else {
+            }
+            if (DiscordManager.getInstance().getDiscordClient() != null) {
                 while (!DiscordManager.getInstance().isClientReady()) {
                     try {
                         Thread.sleep(1000);
@@ -855,7 +853,7 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             importTriggerWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("IOException thrown while loading \"fxml/importTriggerWindow.fxml\"");
         }
         importTriggerWindow.showAndWait();
@@ -864,33 +862,10 @@ public class MainWindowController {
 
     public void deleteTrigger() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() == 0) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
             return;
-        }
-        //  TODO move to AlertDialogs
-        // ShowAndWait dialog with int
-        if (triggerTableView.getSelectionModel().getSelectedItems() != null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            int size = triggerTableView.getSelectionModel().getSelectedItems().size();
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText(null);
-            stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP1"));
-            if (!Settings.getInstance().getLocale().equals(Language.Japanese)) {
-                stringBuilder.append(" ");
-            }
-            stringBuilder.append(size);
-            if (!Settings.getInstance().getLocale().equals(Language.Japanese)) {
-                stringBuilder.append(" ");
-            }
-            if (size == 1) {
-                stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP3"));
-            } else {
-                stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP2"));
-            }
-
-            alert.setContentText(stringBuilder.toString());
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.CANCEL) {
+        } else {
+            if (AlertDialogs.deleteTriggersDialog(triggerTableView.getSelectionModel().getSelectedItems().size()).getResult() == ButtonType.CANCEL) {
                 return;
             }
         }
@@ -953,15 +928,16 @@ public class MainWindowController {
                     URI link = new URI("https://discordapp.com/oauth2/authorize?client_id=" + Settings.getInstance().getClientID() + "&scope=bot");
                     Desktop.getDesktop().browse(link);
                 } else {
-                    AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertDiscordNoClientID"));
+                    AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertDiscordNoClientID"));
                     Logger.getInstance().log("Couldn't add bot to Discord, ClientID is not specified");
                 }
             } catch (IOException | URISyntaxException e) {
-                AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot"));
+                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot"));
                 Logger.getInstance().log("Couldn't add bot to Discord, " + e.getMessage());
             }
+        } else {
+            AlertDialogs.addBotDialog();
         }
-//  TODO add dialog, couldn't open web browser, and maybe allow to copy link
     }
 
     public void initialize() {
@@ -1015,7 +991,7 @@ public class MainWindowController {
             };
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (cell.getTableRow().getItem() != null) {
-//                        JavaFX 10+
+//                    JavaFX 10+
 //                    cell.getTableRow().getItem().setEnabled(newValue);
                     ((Trigger) cell.getTableRow().getItem()).setEnabled(newValue);
 
@@ -1070,17 +1046,17 @@ public class MainWindowController {
                     if (empty) {
                         setGraphic(null);
                     } else {
-                            button.setOnAction(event -> {
-                                try{
+                        button.setOnAction(event -> {
+                            try {
 //                                    JavaFX 10
 //                                    getTableRow().getItem().debugTrigger();
-                                    ((Trigger) getTableRow().getItem()).debugTrigger();
-                                } catch (AudioException e){
-                                    AlertDialogs.audioExceptionDialog(e.getExceptionType());
-                                } catch (VoiceException e) {
-                                    AlertDialogs.voiceExceptionDialog(e.getExceptionType());
-                                }
-                            });
+                                ((Trigger) getTableRow().getItem()).debugTrigger();
+                            } catch (AudioException e) {
+                                AlertDialogs.audioExceptionDialog(e.getExceptionType());
+                            } catch (VoiceException e) {
+                                AlertDialogs.voiceExceptionDialog(e.getExceptionType());
+                            }
+                        });
                         setGraphic(button);
                     }
                 }
@@ -1094,8 +1070,6 @@ public class MainWindowController {
             });
 
             cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//  TODO test if padding needed
-            cell.setStyle("-fx-padding: 0 0 0 0;");
             return cell;
         });
         triggerTableColumnTriggerSound.setCellValueFactory(param -> param.getValue().getSoundData());
@@ -1122,8 +1096,8 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             exportWindow.setScene(new Scene(root));
         } catch (IOException e) {
-//  TODO add alert pop up
-           Logger.getInstance().log("Couldn't load \"fxml/exportTriggerWindow.fxml\" IOException");
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            Logger.getInstance().log("Couldn't load \"fxml/exportTriggerWindow.fxml\" IOException");
         }
         exportWindow.showAndWait();
     }
@@ -1142,17 +1116,12 @@ public class MainWindowController {
     }
 
     public void editTriggerButton() {
-//  TODO move to AlertDialogs
         if (triggerTableView.getSelectionModel().getSelectedItems().size() > 1) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle(LanguageData.getInstance().getMsg("tableErrorTitle"));
-            alert.setContentText(LanguageData.getInstance().getMsg("tableErrorToManySelected"));
-            alert.showAndWait();
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertTableToManySelected"));
             return;
         }
         if (triggerTableView.getSelectionModel().getSelectedItems().isEmpty()) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
             return;
         }
         Stage editWindow = new Stage();
@@ -1164,7 +1133,7 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             editWindow.setScene(new Scene(root));
         } catch (IOException e) {
-//  TODO add alert pop up
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("Couldn't load \"fxml/editTriggerWindow.fxml\" IOException ");
         }
         EditTriggerController editTriggerController = fxmlLoader.getController();
@@ -1185,7 +1154,7 @@ public class MainWindowController {
         }
     }
 
-    private void clearLogFileStatusStyle(){
+    private void clearLogFileStatusStyle() {
         actLogFileStatusLabel.getStyleClass().remove("LogStatusLabelGreen");
         actLogFileStatusLabel.getStyleClass().remove("LogStatusLabelYellow");
     }

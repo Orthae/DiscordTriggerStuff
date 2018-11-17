@@ -237,13 +237,13 @@ public class Settings {
             }
             if (error) {
                 Logger.getInstance().log("Old setting file is corrupted, some setting might have been lost.");
-                AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
             Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("IO Exception thrown while reading setting file");
         }
     }
@@ -290,7 +290,7 @@ public class Settings {
                 }
             }
         } catch (ParserConfigurationException | SAXException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
             Logger.getInstance().log("XML error while reading legacy trigger file");
         } catch (IOException e) {
             Logger.getInstance().log("IO Exception while loading triggers from legacy file");
@@ -439,13 +439,13 @@ public class Settings {
             }
 
             if (error) {
-                AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
             Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("IO Exception thrown while reading setting file");
         }
     }

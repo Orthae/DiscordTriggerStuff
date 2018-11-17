@@ -202,7 +202,7 @@ public class AddEditBase {
         if (isValid) {
             return true;
         } else {
-            AlertDialogs.errorDialogShow(errorMessage.toString());
+            AlertDialogs.errorDialog(errorMessage.toString());
             return false;
         }
     }
@@ -238,7 +238,7 @@ public class AddEditBase {
                 return;
             }
             if (triggerSoundDataTField.getText().isEmpty()) {
-                AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertValidateSoundData"));
+                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertValidateSoundData"));
             } else {
                 if (radioButtonTTS.isSelected()) {
                     VoiceRSS.getInstance().debugTTS(triggerSoundDataTField.getText());

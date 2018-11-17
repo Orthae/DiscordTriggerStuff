@@ -60,6 +60,11 @@ public class ExportWindowController extends ImportExportBase {
     }
 
     public void exportACT() {
+        Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
+        if(!actConfig.toFile().exists()){
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound"));
+            return;
+        }
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setContentText(LanguageData.getInstance().getMsg("alertExport"));
         alert.setHeaderText(null);
@@ -68,7 +73,6 @@ public class ExportWindowController extends ImportExportBase {
         if (alert.getResult() == ButtonType.CANCEL) {
             return;
         }
-        Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
         try (BufferedReader br = new BufferedReader(new FileReader(actConfig.toFile()))) {
             StringBuilder stringBuilder = new StringBuilder();
             while (br.ready()) {
@@ -108,7 +112,7 @@ public class ExportWindowController extends ImportExportBase {
             bufferedWriter.write(stringBuilder.toString());
             bufferedWriter.close();
         } catch (IOException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
             Logger.getInstance().log("Exporting to ACT failed, IO Exception");
         }
     }
@@ -184,11 +188,11 @@ public class ExportWindowController extends ImportExportBase {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(null);
                 alert.setHeaderText(null);
-                alert.setContentText(LanguageData.getInstance().getMsg("importCopiedToClipboard"));
+                alert.setContentText(LanguageData.getInstance().getMsg("AlertExportCopiedToClipboard"));
                 alert.show();
             }
         } catch (ParserConfigurationException | TransformerException e) {
-            AlertDialogs.errorDialogShow(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertExportFailed"));
             Logger.getInstance().log("Exporting triggers failed, this shouldn't happen");
         }
     }

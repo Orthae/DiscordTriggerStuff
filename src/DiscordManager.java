@@ -1,8 +1,9 @@
+import enums.DiscordExceptionType;
+import exceptions.DiscordException;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IVoiceChannel;
-import sx.blah.discord.util.DiscordException;
 
 import java.util.List;
 
@@ -21,7 +22,6 @@ public class DiscordManager {
 
     //  Fields
     private IDiscordClient discordClient;
-    private String errorMessage;
     private IGuild guild;
     private IVoiceChannel voiceChannel;
 
@@ -40,13 +40,6 @@ public class DiscordManager {
 
     public IVoiceChannel getVoiceChannel() {
         return voiceChannel;
-    }
-
-    public String getErrorMessage() {
-        if (errorMessage.contains("Unauthorized")) {
-            return LanguageData.getInstance().getMsg("mainDiscordLoginUnauthorized");
-        }
-        return LanguageData.getInstance().getMsg("");
     }
 
     public boolean isClientReady() {
@@ -84,14 +77,16 @@ public class DiscordManager {
         SoundManager.getInstance().clearDiscordPlayer();
     }
 
-    public void logIn(String token) {
+    public void logIn(String token) throws DiscordException {
         ClientBuilder discordBuilder = new ClientBuilder();
         discordBuilder.withToken(token);
         try {
             discordClient = discordBuilder.login();
-        } catch (DiscordException e) {
+        } catch (sx.blah.discord.util.DiscordException e) {
             Logger.getInstance().log(e.getErrorMessage());
-            errorMessage = e.getErrorMessage();
+            if (e.getErrorMessage().contains("Unauthorized")) {
+                throw new DiscordException(DiscordExceptionType.UNAUTHORIZED);
+            }
         }
     }
 
