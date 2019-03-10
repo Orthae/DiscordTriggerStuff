@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="appWindow" stylesheets="@../skin.css" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.orthae.discordtriggerstuff.controllers.MainWindowController">
+    <top>
+        <BorderPane>
+            <center>
+                <HBox fx:id="topButtonBar" styleClass="TopBarPane">
+                    <ToggleButton fx:id="topBarMainButton" onAction="#showMainWindow" styleClass="TopBarButton"
+                                  text="MAIN">
+                        <toggleGroup>
+                            <!--suppress JavaFxUnresolvedFxIdReference -->
+                            <ToggleGroup fx:id="topbuttontoggle"/>
+                        </toggleGroup>
+                    </ToggleButton>
+                    <ToggleButton fx:id="topBarTriggerTableButton" onAction="#showTriggerWindow"
+                                  styleClass="TopBarButton" text="TRIGGERS" toggleGroup="$topbuttontoggle"/>
+                </HBox>
+            </center>
+            <right>
+                <HBox>
+                    <ToggleButton fx:id="topBarUnlockButton" onAction="#unlockButton" styleClass="TopBarButtonUnlock"
+                                  text="UNLOCK"/>
+                    <Button fx:id="quitButton" onAction="#quitButton" styleClass="TopBarButtonQuit" text="QUIT"/>
+                </HBox>
+            </right>
+
+
+        </BorderPane>
+    </top>
+    <center>
+        <StackPane fx:id="mainStackPane">
+            <HBox fx:id="mainWindow" styleClass="CenterBox">
+                <Separator orientation="VERTICAL"/>
+                <VBox styleClass="innerbox">
+                    <Separator/>
+                    <Label fx:id="discordConnectLabel" styleClass="InnerLabels" text="CONNECT_TO_DISCORD"/>
+                    <HBox styleClass="InnerHBox">
+                        <Button fx:id="discordConnectButton" onAction="#discordLogIn" styleClass="innerbutton"
+                                text="CONNECT"/>
+                        <Button fx:id="discordDisconnectButton" onAction="#discordLogOut" styleClass="innerbutton"
+                                text="DISCONNECT"/>
+                    </HBox>
+                    <Label fx:id="discordSelectServerLabel" styleClass="InnerLabels" text="SELECT_SERVER"/>
+                    <HBox styleClass="InnerHBox">
+                        <ComboBox fx:id="discordSelectServerComboBox" styleClass="InnerComboBox"/>
+                    </HBox>
+                    <Label fx:id="discordSelectChannelLabel" styleClass="InnerLabels" text="SELECT_CHANNEL"/>
+                    <HBox styleClass="InnerHBox">
+                        <ComboBox fx:id="discordSelectChannelComboBox" styleClass="InnerComboBox"/>
+                    </HBox>
+                    <HBox styleClass="InnerHBox">
+                        <Button fx:id="discordJoinChannelButton" onAction="#discordJoinChannel" styleClass="innerbutton"
+                                text="JOIN"/>
+                        <Button fx:id="discordLeaveChannelButton" onAction="#discordLeaveChannel"
+                                styleClass="innerbutton" text="LEAVE"/>
+                    </HBox>
+                    <Separator/>
+                    <Label fx:id="discordVolumeLabel" styleClass="InnerLabels" text="DISCORD_VOLUME"/>
+                    <Slider fx:id="discordVolumeSlider" value="100" showTickLabels="true" showTickMarks="true"
+                            styleClass="VolumeSlider"/>
+                    <CheckBox fx:id="muteDiscordCheckBox" text="MUTE_DISCORD"/>
+                    <Separator/>
+                    <Label fx:id="localVolumeLabel" styleClass="InnerLabels" text="LOCAL_VOLUME"/>
+                    <Slider fx:id="localVolumeSlider" value="100" showTickLabels="true" showTickMarks="true"
+                            styleClass="VolumeSlider"/>
+                    <CheckBox fx:id="muteLocalCheckBox" text="MUTE_LOCAL"/>
+                    <Separator/>
+                </VBox>
+                <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                <VBox >
+                    <HBox styleClass="InnerHBox">
+                    <VBox styleClass="innerbox">
+                        <Separator/>
+                        <Label styleClass="InnerLabels" fx:id="actLogFileLabel" text="ACTLOGFILE"/>
+                        <Button styleClass="ButtonWide" fx:id="actFindLogFileButton" onAction="#actFindLogFile" text="FINDLOGFILE"/>
+                        <Button styleClass="ButtonWide" fx:id="actSelectLogFileButton" onAction="#actSelectLogFile" text="SELECTLOGFILE"/>
+                        <Label fx:id="actLogFileStatusLabel" text="LogFileStatus"/>
+                        <Separator prefHeight="200.0"/>
+                        <Label fx:id="logFolderSizeLabel" text="Log folder size"/>
+                        <Button fx:id="deleteLogFiles" onAction="#deleteLogFiles" styleClass="ButtonWide" text="Delete log files"/>
+                        <Separator prefHeight="200.0"/>
+                        <Label fx:id="appLanguageLabel" text="Application language"/>
+                        <ComboBox styleClass="InnerComboBox" fx:id="languageComboBox"/>
+                        <Label fx:id="ttsLanguageLabel" text="TTS Language"/>
+                        <ComboBox styleClass="InnerComboBox" fx:id="ttsLanguageComboBox"/>
+                        <Separator prefHeight="200.0"/>
+                    </VBox>
+                    </HBox>
+                </VBox>
+                <Separator orientation="VERTICAL"/>
+                <VBox styleClass="innerbox">
+                    <Separator/>
+                            <Label fx:id="discordTokenLabel" text="DISCORDTOKEN"/>
+                            <StackPane>
+                                <TextField styleClass="InnerComboBox" fx:id="dummyTField1" disable="true" text="Disabled"/>
+                                <TextField styleClass="InnerComboBox" visible="false" fx:id="discordTokenTField"/>
+                            </StackPane>
+                    <Label fx:id="discordClientID" text="CLIENTID"/>
+                    <StackPane>
+                        <TextField styleClass="InnerComboBox" fx:id="dummyTField3" disable="true" text="Disabled"/>
+                        <TextField styleClass="InnerComboBox" fx:id="discordClientIDTField" visible="false"/>
+                    </StackPane>
+                    <Button fx:id="discordAddBotButton" text="ADDBOTTOSERVER" onAction="#addBotToServer" styleClass="ButtonWide"/>
+                    <Separator/>
+                            <Label fx:id="voiceRRSToken" text="VOICERSS TOKEN"/>
+                            <StackPane>
+                                <TextField styleClass="InnerComboBox" fx:id="dummyTField2" disable="true" text="Disabled"/>
+                                <TextField styleClass="InnerComboBox" visible="false" fx:id="voiceRRSTokenTField"/>
+                            </StackPane>
+                    <Button styleClass="ButtonWide" text="TESTVOICERRS" fx:id="testVoiceRRSButton" onAction="#voiceRRSTest"/>
+                    <Button styleClass="ButtonWide" text="DELETECACHEDSOUNDS\" fx:id="deleteCachedSounds" onAction="#deleteCachedSounds" />
+                    <CheckBox fx:id="tokenCheckbox" text="SHOWTOKENS"/>
+                    <Separator/>
+                            <Label fx:id="actLogFolderLabel" text="ACT log folder"/>
+                    <StackPane>
+                        <TextField styleClass="InnerComboBox" fx:id="dummyTField4" disable="true" text="Disabled"/>
+                        <TextField styleClass="InnerComboBox" visible="false" fx:id="logFolderTField"/>
+                    </StackPane>
+                        <CheckBox fx:id="logFolderCheckBox" text="Show log folder"/>
+                        <Button fx:id="actFindLogFolderButton" styleClass="ButtonWide" onAction="#findLogFolder" text="FInd log folder"/>
+                        <Button fx:id="actSelectLogFolderButton" styleClass="ButtonWide" onAction="#selectLogFolder" text="Select log folder"/>
+                    <Separator/>
+                </VBox>
+                <Separator orientation="VERTICAL"/>
+            </HBox>
+            <HBox styleClass="TableWindow" fx:id="triggerWindow" visible="false">
+                <VBox HBox.hgrow="ALWAYS">
+                    <HBox styleClass="FormattingBox">
+                        <Label fx:id="tableSortingTypeLabel" text="TYPE"/>
+                        <ComboBox fx:id="tableSortingTypeComboBox"/>
+                        <Label fx:id="tableSortingCategoryLabel" text="CATEGORY"/>
+                        <ComboBox fx:id="tableSortingCategoryComboBox"/>
+                    </HBox>
+                    <TableView fx:id="triggerTableView" styleClass="TableStyle" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="triggerTableColumnEnabled"/>
+                            <TableColumn fx:id="triggerTableColumnTriggerName" text="NAME"/>
+                            <TableColumn fx:id="triggerTableColumnTriggerType" text="TRIGGERTYPE"/>
+                            <TableColumn fx:id="triggerTableColumnTriggerCategory" text="CATEGORY"/>
+                            <TableColumn fx:id="triggerTableColumnTriggerCommand" text="COMMAND"/>
+                            <TableColumn fx:id="triggerTableColumnTriggerDelay" text="DELAY"/>
+                            <TableColumn fx:id="triggerTableColumnTriggerSound" text="SOUND"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+                <HBox>
+                    <Separator orientation="VERTICAL"/>
+                    <VBox>
+                        <VBox styleClass="TriggerMenuVHox">
+                            <Button fx:id="addTriggerTableButton" onAction="#addTriggerButton"
+                                    styleClass="TriggerTableButton" text="ADD_TRIGGER"/>
+                            <Button fx:id="editTriggerTableButton" onAction="#editTriggerButton"
+                                    styleClass="TriggerTableButton" text="EDIT_TRIGGER"/>
+                            <Button fx:id="deleteTriggerTableButton" onAction="#deleteTrigger"
+                                    styleClass="TriggerTableButton" text="DELETE_TRIGGER"/>
+                            <Separator style="-fx-padding: 0 -5 0 -5"/>
+                            <Button fx:id="activateTriggersTableButton" onAction="#activateTriggers"
+                                    styleClass="TriggerTableButton" text="ACTIVATE"/>
+                            <Button fx:id="deactivateTriggersTableButton" onAction="#deactivateTriggers"
+                                    styleClass="TriggerTableButton" text="DEACTIVATE"/>
+                            <Separator style="-fx-padding: 0 -5 0 -5"/>
+                            <Button fx:id="importTriggersButton" onAction="#importButton" styleClass="TriggerTableButton" text="Import"/>
+                            <Button fx:id="exportTriggersButton" onAction="#exportButton" styleClass="TriggerTableButton" text="Export"/>
+                            <Separator style="-fx-padding: 0 -5 0 -5"/>
+                            <VBox styleClass="TableVolumeControl">
+                                <Label fx:id="discordVolumeLabelTable" styleClass="InnerLabels" text="DISCORD_VOLUME"/>
+                                <Slider fx:id="discordVolumeSliderTable" value="100" showTickLabels="true" showTickMarks="true"/>
+                                <CheckBox fx:id="muteDiscordCheckBoxTable" text="MUTE_DISCORD"/>
+                                <Separator style="-fx-padding: 0 -5 0 -5"/>
+                                <Label fx:id="localVolumeLabelTable" styleClass="InnerLabels" text="LOCAL_VOLUME"/>
+                                <Slider fx:id="localVolumeSliderTable" value="100" showTickLabels="true" showTickMarks="true"/>
+                                <CheckBox fx:id="muteLocalCheckBoxTable"  text="MUTE_LOCAL"/>
+                            </VBox>
+                            <Separator style="-fx-padding: 0 -5 0 -5"/>
+                        </VBox>
+                    </VBox>
+                    <Separator orientation="VERTICAL"/>
+                </HBox>
+            </HBox>
+        </StackPane>
+    </center>
+</BorderPane>

@@ -7,7 +7,7 @@ Discord Trigger Stuff, DTS in short, is a application that allow you to broadcas
 3. [Installation](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/en/README.md#installation)
 4. [Languages](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/en/README.md#languages)
 5. [Usage](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/en/README.md#usage)
-6. [Libs used](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/en/README.md#libs-used)
+6. [Credit](https://github.com/Orthae/DiscordTriggerStuff/blob/master/doc/en/README.md#credit)
 
 
 ## Requirements
@@ -34,7 +34,8 @@ DST is currently available in 4 languages, English, German, French and Japanese.
 
 [Detailed guide, on how to use and run-down of the features is available here.]()
 
-## Libs used
+## Credit
 * [Discord4J](https://github.com/Discord4J/Discord4J)
 * [VoiceRSS SDK](http://www.voicerss.org/sdk/)
 * [SLF4J](https://www.slf4j.org/)
+* [Icons by prokofusha](https://www.deviantart.com/prokofusha)

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.orthae.discordtriggerstuff.controllers.AddTriggerController">
+    <top>
+         <BorderPane fx:id="topLabelPane" styleClass="TopBarPane">
+             <center>
+                 <Label fx:id="topBarLabel" text="STUFF" styleClass="TopBarLabel"/>
+             </center>
+         </BorderPane>
+    </top>
+    <center>
+        <VBox>
+            <VBox>
+                <HBox>
+                    <VBox styleClass="AddTriggerTopVBox">
+                        <Label fx:id="triggerNameLabel" text="TRIGGERNAME" />
+                        <TextField fx:id="triggerNameTextField" />
+                    </VBox>
+                    <VBox styleClass="AddTriggerTopVBox">
+                        <Label fx:id="triggerTypeLabel" text="TRIGGERTYPE" />
+                        <ComboBox fx:id="triggerTypeComboBox" />
+                    </VBox>
+                    <VBox styleClass="AddTriggerTopVBox">
+                        <Label fx:id="triggerCategoryLabel" text="TRIGGERCATEGORY" />
+                        <ComboBox fx:id="triggerCategoryComboBox" styleClass="AddTriggerTopCategoryCBox" />
+                        <CheckBox fx:id="triggerCategoryCheckBox" text="CREATENEWCATEGORY" />
+                    </VBox>
+                    <VBox styleClass="AddTriggerTopButtonBox">
+                        <Button fx:id="createEditButton" onAction="#addEditTriggerButton" styleClass="AddTriggerTopButtons" text="CREATEEDIT" />
+                        <Button fx:id="cancelButton" onAction="#cancelTriggerButton" styleClass="AddTriggerTopButtons" text="Cancel" />
+                    </VBox>
+                </HBox>
+                <Separator />
+            </VBox>
+            <HBox styleClass="AddTriggerCommandHBox">
+                <VBox styleClass="AddTriggerCommandVBoxSpacer">
+                        <VBox>
+                            <Label fx:id="triggerCommandLabel" text="Trigger command" />
+                            <TextField fx:id="triggerCommandTextField" styleClass="AddTriggerCommandTField" />
+                        </VBox>
+                </VBox>
+                <VBox>
+                    <Label fx:id="delayLabel" text="Delay" />
+               <Spinner fx:id="triggerDelaySpinner" />
+                </VBox>
+            </HBox>
+         <Separator styleClass="AddTriggerSpacer" />
+         <HBox styleClass="AddTriggerCommandHBox">
+               <VBox style="-fx-spacing: 3">
+                     <Label fx:id="soundDataLabel" text="Sound data" />
+                   <HBox style="-fx-spacing: 3">
+                       <TextField fx:id="triggerSoundDataTField" styleClass="AddTriggerSoundFileTField" />
+                       <Button fx:id="selectSoundPathFileButton" onAction="#selectSoundFile" text="BROWSE" />
+                       <Button fx:id="playButton" text="play" onAction="#playButton"/>
+                   </HBox>
+                   <HBox style="-fx-spacing: 5">
+                       <RadioButton fx:id="radioButtonBeep" text="Beep">
+                           <toggleGroup>
+                               <!--suppress JavaFxUnresolvedFxIdReference -->
+                               <ToggleGroup fx:id="radioButtons"/>
+                           </toggleGroup>
+                       </RadioButton>
+                       <RadioButton fx:id="radioButtonTTS" text="Text to speech" toggleGroup="$radioButtons"/>
+                       <RadioButton fx:id="radioButtonSoundFile" text="Sound file" toggleGroup="$radioButtons"/>
+                   </HBox>
+
+               </VBox>
+            </HBox>
+         <Separator styleClass="AddTriggerSpacer" />
+        </VBox>
+    </center>
+</BorderPane>

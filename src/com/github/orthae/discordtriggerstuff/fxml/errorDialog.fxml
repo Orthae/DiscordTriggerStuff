@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ErrorDialogController">
+    <top>
+        <BorderPane fx:id="topLabelPane" styleClass="TopBarPane">
+            <center>
+                <Label fx:id="topBarLabel" text="STUFF" styleClass="TopBarLabel"/>
+            </center>
+        </BorderPane>
+    </top>
+    <center>
+        <VBox styleClass="ConfirmationDialogPane">
+            <HBox styleClass="ConfirmationDialogInnerPane">
+                <ImageView fx:id="imageViewIcon"/>
+                <Label fx:id="textLabel" text="A LABEL"/>
+            </HBox>
+            <HBox styleClass="ConfirmationDialogButtonBox">
+                <Button styleClass="ConfirmationDialogButtons" fx:id="buttonConfirm" text="CONFIRM" onAction="#buttonAccepted"/>
+                <Button styleClass="ConfirmationDialogButtons" fx:id="buttonCancel" text="CANCEL" onAction="#buttonCancel"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
