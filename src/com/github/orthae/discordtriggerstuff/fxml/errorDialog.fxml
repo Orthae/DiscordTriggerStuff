@@ -4,11 +4,13 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ErrorDialogController">
+
+
+<BorderPane  stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ErrorAlertDialog">
     <top>
-        <BorderPane fx:id="topLabelPane" styleClass="TopBarPane">
+        <BorderPane fx:id="alertTitlePane" styleClass="TopBarPane">
             <center>
-                <Label fx:id="topBarLabel" text="STUFF" styleClass="TopBarLabel"/>
+                <Label fx:id="alertTitle" text="STUFF" styleClass="TopBarLabel"/>
             </center>
         </BorderPane>
     </top>
@@ -16,12 +18,13 @@
         <VBox styleClass="ConfirmationDialogPane">
             <HBox styleClass="ConfirmationDialogInnerPane">
                 <ImageView fx:id="imageViewIcon"/>
-                <Label fx:id="textLabel" text="A LABEL"/>
+                <Label fx:id="alertMessage" text="A LABEL"/>
             </HBox>
             <HBox styleClass="ConfirmationDialogButtonBox">
-                <Button styleClass="ConfirmationDialogButtons" fx:id="buttonConfirm" text="CONFIRM" onAction="#buttonAccepted"/>
                 <Button styleClass="ConfirmationDialogButtons" fx:id="buttonCancel" text="CANCEL" onAction="#buttonCancel"/>
             </HBox>
         </VBox>
     </center>
 </BorderPane>
+
+

@@ -1,6 +1,7 @@
 package com.github.orthae.discordtriggerstuff.controllers;
 
 import com.github.orthae.discordtriggerstuff.*;
+import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.Language;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
+import org.eclipse.jetty.util.preventers.AbstractLeakPreventer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -66,7 +68,9 @@ public class ExportWindowController extends ImportExportBase {
     public void exportACT() {
         Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
         if(!actConfig.toFile().exists()){
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound"));
+            dialog.getAlertStage().show();
             return;
         }
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -116,7 +120,9 @@ public class ExportWindowController extends ImportExportBase {
             bufferedWriter.write(stringBuilder.toString());
             bufferedWriter.close();
         } catch (IOException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("Exporting to ACT failed, IO Exception");
         }
     }
@@ -196,7 +202,9 @@ public class ExportWindowController extends ImportExportBase {
                 alert.show();
             }
         } catch (ParserConfigurationException | TransformerException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertExportFailed"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertExportFailed"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("Exporting triggers failed, this shouldn't happen");
         }
     }

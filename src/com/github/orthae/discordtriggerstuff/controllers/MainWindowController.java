@@ -1,6 +1,7 @@
 package com.github.orthae.discordtriggerstuff.controllers;
 
 import com.github.orthae.discordtriggerstuff.*;
+import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.DialogButton;
 import com.voicerss.tts.Languages;
@@ -860,7 +861,9 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             importTriggerWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("IOException thrown while loading \"com.github.orthae.discordtriggerstuff.fxml/importTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\"");
         }
         importTriggerWindow.showAndWait();
@@ -869,7 +872,9 @@ public class MainWindowController {
 
     public void deleteTrigger() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() == 0) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
+            dialog.getAlertStage().show();
             return;
         } else {
             if (AlertDialogs.deleteTriggersDialog(appWindow.getScene().getWindow(),triggerTableView.getSelectionModel().getSelectedItems().size()) == DialogButton.CANCEL) {
@@ -935,11 +940,15 @@ public class MainWindowController {
                     URI link = new URI("https://discordapp.com/oauth2/authorize?client_id=" + Settings.getInstance().getClientID() + "&scope=bot");
                     Desktop.getDesktop().browse(link);
                 } else {
-                    AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertDiscordNoClientID"));
+                    AlertDialog dialog = AlertDialog.createErrorDialog();
+                    dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordNoClientID"));
+                    dialog.getAlertStage().show();
                     Logger.getInstance().log("Couldn't add bot to Discord, ClientID is not specified");
                 }
             } catch (IOException | URISyntaxException e) {
-                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot"));
+                AlertDialog dialog = AlertDialog.createErrorDialog();
+                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot"));
+                dialog.getAlertStage().show();
                 Logger.getInstance().log("Couldn't add bot to Discord, " + e.getMessage());
             }
         } else {
@@ -1103,7 +1112,9 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             exportWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("Couldn't load \"com.github.orthae.discordtriggerstuff.fxml/exportTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\" IOException");
         }
         exportWindow.showAndWait();
@@ -1124,11 +1135,15 @@ public class MainWindowController {
 
     public void editTriggerButton() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() > 1) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertTableToManySelected"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertTableToManySelected"));
+            dialog.getAlertStage().show();
             return;
         }
         if (triggerTableView.getSelectionModel().getSelectedItems().isEmpty()) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected"));
+            dialog.getAlertStage().show();
             return;
         }
         Stage editWindow = new Stage();
@@ -1140,7 +1155,9 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             editWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("Couldn't load \"com.github.orthae.discordtriggerstuff.fxml/editTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\" IOException ");
         }
         EditTriggerController editTriggerController = fxmlLoader.getController();

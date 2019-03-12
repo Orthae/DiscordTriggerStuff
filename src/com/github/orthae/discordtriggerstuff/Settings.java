@@ -1,5 +1,6 @@
 package com.github.orthae.discordtriggerstuff;
 
+import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.Language;
 import com.github.orthae.discordtriggerstuff.enums.SoundType;
@@ -240,13 +241,19 @@ public class Settings {
             }
             if (error) {
                 Logger.getInstance().log("Old setting file is corrupted, some setting might have been lost.");
-                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+                AlertDialog dialog = AlertDialog.createErrorDialog();
+                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+                dialog.getAlertStage().show();
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("IO Exception thrown while reading setting file");
         }
     }
@@ -293,7 +300,9 @@ public class Settings {
                 }
             }
         } catch (ParserConfigurationException | SAXException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("XML error while reading legacy trigger file");
         } catch (IOException e) {
             Logger.getInstance().log("IO Exception while loading triggers from legacy file");
@@ -442,13 +451,19 @@ public class Settings {
             }
 
             if (error) {
-                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+                AlertDialog dialog = AlertDialog.createErrorDialog();
+                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+                dialog.getAlertStage().show();
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
-            AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertIOException"));
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
+            dialog.getAlertStage().show();
             Logger.getInstance().log("IO Exception thrown while reading setting file");
         }
     }

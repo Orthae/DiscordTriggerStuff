@@ -19,6 +19,8 @@ import java.io.IOException;
 
 public class AlertDialogs {
 
+// TODO Finish rewriting into AlertDialog class, change to method chaining for less code (?)
+// TODO Figure out what to do with exceptions dialogs to avoid code duplication
     public static void errorDialog(String msg){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(LanguageData.getInstance().getMsg("AlertError"));
@@ -39,10 +41,10 @@ public class AlertDialogs {
             Parent root = fxmlLoader.load();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
-            Logger.getInstance().log("Could't load confirmDialog.com.github.orthae.discordtriggerstuff.fxml");
+            Logger.getInstance().log("Could't load /com/github/orthae/discordtriggerstuff/fxml/confirmDialog.fxml");
         }
-        ConfirmDialogController confirmDialogController = fxmlLoader.getController();
-        confirmDialogController.setTextLabel(text);
+        ConfirmAlertDialog confirmDialogController = fxmlLoader.getController();
+        confirmDialogController.setAlertMessage(text);
         stage.toFront();
         stage.showAndWait();
      return confirmDialogController.getDialogButton();

@@ -1,6 +1,7 @@
 package com.github.orthae.discordtriggerstuff.controllers;
 
 import com.github.orthae.discordtriggerstuff.*;
+import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.Language;
 import com.github.orthae.discordtriggerstuff.enums.SoundType;
@@ -14,7 +15,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.nio.file.Paths;
 
-public class AddEditBase {
+public abstract class AddEditBase {
     //  FXML
     @FXML
     private ComboBox<String> triggerTypeComboBox;
@@ -206,7 +207,9 @@ public class AddEditBase {
         if (isValid) {
             return true;
         } else {
-            AlertDialogs.errorDialog(errorMessage.toString());
+            AlertDialog dialog = AlertDialog.createErrorDialog();
+            dialog.setAlertMessage(errorMessage.toString());
+            dialog.getAlertStage().show();
             return false;
         }
     }
@@ -242,7 +245,9 @@ public class AddEditBase {
                 return;
             }
             if (triggerSoundDataTField.getText().isEmpty()) {
-                AlertDialogs.errorDialog(LanguageData.getInstance().getMsg("AlertValidateSoundData"));
+                AlertDialog dialog = AlertDialog.createErrorDialog();
+                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData"));
+                dialog.getAlertStage().show();
             } else {
                 if (radioButtonTTS.isSelected()) {
                     VoiceManager.getInstance().debugTTS(triggerSoundDataTField.getText());

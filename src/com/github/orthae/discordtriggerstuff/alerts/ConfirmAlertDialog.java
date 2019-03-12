@@ -12,7 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
-public class ErrorDialogController extends AlertDialogs {
+public class ConfirmAlertDialog extends AlertDialog {
+
     @FXML
     private BorderPane topLabelPane;
     @FXML
@@ -57,6 +58,7 @@ public class ErrorDialogController extends AlertDialogs {
         buttonConfirm.getStyleClass().add("JapaneseFont");
         buttonCancel.getStyleClass().add("JapaneseFont");
         topBarLabel.getStyleClass().add("TopLabelJapanese");
+
     }
 
     private void westernFont(){
@@ -69,19 +71,6 @@ public class ErrorDialogController extends AlertDialogs {
     public void buttonAccepted(){
         dialogButton = DialogButton.CONFIRM;
         buttonConfirm.getScene().getWindow().hide();
-    }
-
-    public void buttonCancel(){
-        dialogButton = DialogButton.CANCEL;
-        buttonCancel.getScene().getWindow().hide();
-    }
-
-    public DialogButton getDialogButton(){
-        return dialogButton;
-    }
-
-    public void setTextLabel(String text){
-        textLabel.setText(text);
     }
 
 

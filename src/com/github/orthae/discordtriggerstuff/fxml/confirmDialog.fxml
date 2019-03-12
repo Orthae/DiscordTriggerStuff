@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ConfirmDialogController">
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ConfirmAlertDialog">
     <top>
         <BorderPane fx:id="topLabelPane" styleClass="TopBarPane">
             <center>
