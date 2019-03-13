@@ -1,7 +1,6 @@
 package com.github.orthae.discordtriggerstuff;
 
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
-import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.Language;
 import com.github.orthae.discordtriggerstuff.enums.SoundType;
 import javafx.collections.FXCollections;
@@ -241,19 +240,13 @@ public class Settings {
             }
             if (error) {
                 Logger.getInstance().log("Old setting file is corrupted, some setting might have been lost.");
-                AlertDialog dialog = AlertDialog.createErrorDialog();
-                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
-                dialog.getAlertStage().show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted")).show();
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
-            dialog.getAlertStage().show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted")).show();
             Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).show();
             Logger.getInstance().log("IO Exception thrown while reading setting file");
         }
     }
@@ -300,9 +293,7 @@ public class Settings {
                 }
             }
         } catch (ParserConfigurationException | SAXException e) {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted")).show();
             Logger.getInstance().log("XML error while reading legacy trigger file");
         } catch (IOException e) {
             Logger.getInstance().log("IO Exception while loading triggers from legacy file");
@@ -451,19 +442,13 @@ public class Settings {
             }
 
             if (error) {
-                AlertDialog dialog = AlertDialog.createErrorDialog();
-                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
-                dialog.getAlertStage().show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted")).show();
             }
         } catch (ParserConfigurationException | NullPointerException | SAXException e) {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertSettingsCorrupted")).show();
             Logger.getInstance().log(e.toString() + " thrown while reading setting file, file might be corrupted");
         } catch (IOException e) {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).show();
             Logger.getInstance().log("IO Exception thrown while reading setting file");
         }
     }

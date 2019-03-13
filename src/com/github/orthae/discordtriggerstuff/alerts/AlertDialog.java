@@ -42,22 +42,22 @@ public abstract class AlertDialog {
     public BorderPane getTitlePane(){
         return alertTitlePane;
     }
-    public Label getAlertTitle(){
-        return alertTitle;
-    }
 
     // Setters
     public void setAlertStage(Stage dialogStage) {
         this.alertStage = dialogStage;
     }
-    public void setAlertMessage(String string){
+    public AlertDialog setAlertMessage(String string){
         alertMessage.setText(string);
+        return this;
     }
-    public void setIcon(InputStream inputStream){
+    public AlertDialog setIcon(InputStream inputStream){
         imageViewIcon.setImage(new Image(inputStream));
+        return this;
     }
-    public void setAlertTitle(String string){
+    public AlertDialog setAlertTitle(String string){
         alertTitle.setText(string);
+        return this;
     }
 
 
@@ -76,6 +76,7 @@ public abstract class AlertDialog {
         }
         ErrorAlertDialog dialog = fxmlLoader.getController();
         ReusedCode.enableWindowMoving(dialog.getTitlePane());
+        dialogStage.toFront();
         dialog.setAlertStage(dialogStage);
         return dialog;
     }
@@ -87,6 +88,15 @@ public abstract class AlertDialog {
     }
 
     // Class methods
+    public void initialize(){
+        System.out.println("init callled");
+
+    }
+
+    public void show(){
+        getAlertStage().show();
+    }
+
     public void buttonCancel(){
         dialogButton = DialogButton.CANCEL;
         alertTitlePane.getScene().getWindow().hide();

@@ -1,8 +1,10 @@
 package com.github.orthae.discordtriggerstuff.controllers;
 
-import com.github.orthae.discordtriggerstuff.*;
+import com.github.orthae.discordtriggerstuff.LanguageData;
+import com.github.orthae.discordtriggerstuff.Logger;
+import com.github.orthae.discordtriggerstuff.Settings;
+import com.github.orthae.discordtriggerstuff.Trigger;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
-import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.Language;
 import com.github.orthae.discordtriggerstuff.enums.SoundType;
 import javafx.fxml.FXML;
@@ -82,9 +84,7 @@ public class ImportWindowController extends ImportExportBase {
             Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
             File actFile = new File(actConfig.toUri());
             if (!actFile.exists()) {
-                AlertDialog dialog = AlertDialog.createErrorDialog();
-                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound"));
-                dialog.getAlertStage().show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).getAlertStage().show();
                 Logger.getInstance().log("ACT config file not found");
                 return;
             }
@@ -125,15 +125,11 @@ public class ImportWindowController extends ImportExportBase {
             getImportExportTable().getItems().clear();
             Logger.getInstance().log("Exception thrown while reading ACT config file");
             Logger.getInstance().log(e.getMessage());
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertImportErrorWhileReading"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportErrorWhileReading")).show();
         }
         if(getImportExportTable().getItems().isEmpty()){
             Logger.getInstance().log("Could not import triggers, import table is empty");
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).show();
         }
     }
 
@@ -192,15 +188,11 @@ public class ImportWindowController extends ImportExportBase {
         }
         catch(ParserConfigurationException | IOException | SAXException | UnsupportedFlavorException e){
             getImportExportTable().getItems().clear();
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).show();
             Logger.getInstance().log(e.getMessage() + " while importing triggers");
         }
         if (getImportExportTable().getItems().isEmpty()) {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound"));
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).show();
             Logger.getInstance().log("Could not import triggers, import table is empty");
         }
     }

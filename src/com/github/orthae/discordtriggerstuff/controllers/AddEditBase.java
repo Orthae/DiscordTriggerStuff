@@ -2,7 +2,6 @@ package com.github.orthae.discordtriggerstuff.controllers;
 
 import com.github.orthae.discordtriggerstuff.*;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
-import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.Language;
 import com.github.orthae.discordtriggerstuff.enums.SoundType;
 import com.github.orthae.discordtriggerstuff.exceptions.AudioException;
@@ -207,9 +206,7 @@ public abstract class AddEditBase {
         if (isValid) {
             return true;
         } else {
-            AlertDialog dialog = AlertDialog.createErrorDialog();
-            dialog.setAlertMessage(errorMessage.toString());
-            dialog.getAlertStage().show();
+            AlertDialog.createErrorDialog().setAlertMessage(errorMessage.toString()).show();
             return false;
         }
     }
@@ -245,9 +242,7 @@ public abstract class AddEditBase {
                 return;
             }
             if (triggerSoundDataTField.getText().isEmpty()) {
-                AlertDialog dialog = AlertDialog.createErrorDialog();
-                dialog.setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData"));
-                dialog.getAlertStage().show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData")).show();
             } else {
                 if (radioButtonTTS.isSelected()) {
                     VoiceManager.getInstance().debugTTS(triggerSoundDataTField.getText());
@@ -259,10 +254,10 @@ public abstract class AddEditBase {
                 }
             }
         } catch (AudioException e) {
-            AlertDialogs.audioExceptionDialog(e.getExceptionType());
+            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
             Logger.getInstance().log("AudioException thrown while playing audio in AddEditBase class" + e.getExceptionType().toString());
         } catch (VoiceException e) {
-            AlertDialogs.voiceExceptionDialog(e.getExceptionType());
+            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
             Logger.getInstance().log("VoiceException thrown while getting TTS file in AddEditBase class " + e.getExceptionType().toString());
         }
     }
