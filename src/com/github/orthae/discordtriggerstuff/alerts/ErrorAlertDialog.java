@@ -1,16 +1,8 @@
 package com.github.orthae.discordtriggerstuff.alerts;
 
 import com.github.orthae.discordtriggerstuff.LanguageData;
-import com.github.orthae.discordtriggerstuff.ReusedCode;
 import com.github.orthae.discordtriggerstuff.Settings;
-import com.github.orthae.discordtriggerstuff.enums.DialogButton;
 import com.github.orthae.discordtriggerstuff.enums.Language;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 
 public class ErrorAlertDialog extends AlertDialog {
 
@@ -28,6 +20,8 @@ public class ErrorAlertDialog extends AlertDialog {
             westernFont();
         }
         setAlertTitle(LanguageData.getInstance().getMsg("AlertError"));
+        setButtonCancel(LanguageData.getInstance().getMsg("ButtonAddEditCancel"));
+
     }
 
     private void japaneseFont(){

@@ -2,7 +2,9 @@ package com.github.orthae.discordtriggerstuff.alerts;
 
 import com.github.orthae.discordtriggerstuff.Logger;
 import com.github.orthae.discordtriggerstuff.ReusedCode;
+import com.github.orthae.discordtriggerstuff.Settings;
 import com.github.orthae.discordtriggerstuff.enums.DialogButton;
+import com.github.orthae.discordtriggerstuff.enums.Language;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,6 +45,10 @@ public abstract class AlertDialog {
         return alertTitlePane;
     }
 
+    public ImageView getImageViewIcon(){
+        return imageViewIcon;
+    }
+
     // Setters
     public void setAlertStage(Stage dialogStage) {
         this.alertStage = dialogStage;
@@ -60,6 +66,9 @@ public abstract class AlertDialog {
         return this;
     }
 
+    public void setButtonCancel(String string){
+        buttonCancel.setText(string);
+    }
 
 
     // Factory methods
@@ -72,7 +81,7 @@ public abstract class AlertDialog {
             Parent root = fxmlLoader.load();
             dialogStage.setScene(new Scene(root));
         } catch (IOException e) {
-            Logger.getInstance().log("Creating AlertDialog");
+            Logger.getInstance().log("IO error while creating error dialog");
         }
         ErrorAlertDialog dialog = fxmlLoader.getController();
         ReusedCode.enableWindowMoving(dialog.getTitlePane());
@@ -81,15 +90,28 @@ public abstract class AlertDialog {
         return dialog;
     }
 
+
     public static AlertDialog createConfirmDialog(){
-
-
-     return null;
+        Stage dialogStage = new Stage();
+        dialogStage.initStyle(StageStyle.UNDECORATED);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(AlertDialog.class.getResource("/com/github/orthae/discordtriggerstuff/fxml/confirmDialog.fxml"));
+        try {
+            Parent root = fxmlLoader.load();
+            dialogStage.setScene(new Scene(root));
+        } catch (IOException e) {
+            Logger.getInstance().log("IO error while creating confirm dialog");
+        }
+        ConfirmAlertDialog dialog = fxmlLoader.getController();
+        ReusedCode.enableWindowMoving(dialog.getTitlePane());
+        dialogStage.toFront();
+        dialog.setAlertStage(dialogStage);
+        return dialog;
     }
 
     // Class methods
     public void initialize(){
-        System.out.println("init callled");
+        languageSetup();
 
     }
 
@@ -103,7 +125,11 @@ public abstract class AlertDialog {
     }
 
     private void languageSetup(){
-
+        if (Settings.getInstance().getLocale().equals(Language.Japanese)) {
+            japaneseFont();
+        } else {
+            westernFont();
+        }
 
     }
 
@@ -111,11 +137,13 @@ public abstract class AlertDialog {
     private void japaneseFont(){
         alertMessage.getStyleClass().add("JapaneseFont");
         alertTitle.getStyleClass().add("TopLabelJapanese");
+        buttonCancel.getStyleClass().add("JapaneseFont");
     }
 
     private void westernFont(){
         alertMessage.getStyleClass().add("WesternFont");
         alertTitle.getStyleClass().add("TopLabelWestern");
+        buttonCancel.getStyleClass().add("WesternFont");
     }
 
 
