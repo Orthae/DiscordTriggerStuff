@@ -4,9 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-
-
-<BorderPane  stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ErrorAlertDialog">
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.ErrorAlertDialog">
     <top>
         <BorderPane fx:id="alertTitlePane" styleClass="TopBarPane">
             <center>

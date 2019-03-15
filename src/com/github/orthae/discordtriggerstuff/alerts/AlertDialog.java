@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,8 +71,18 @@ public abstract class AlertDialog {
         buttonCancel.setText(string);
     }
 
+    public AlertDialog setOwner(Window owner){
+        getAlertStage().initOwner(owner);
+        return this;
+    }
+
+    public void setDialogButton(DialogButton dialogButton){
+        this.dialogButton = dialogButton;
+    }
+
 
     // Factory methods
+    // TODO rework to accept Window as arg and remove setOwner
     public static AlertDialog createErrorDialog(){
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.UNDECORATED);
@@ -119,6 +130,11 @@ public abstract class AlertDialog {
         getAlertStage().show();
     }
 
+    public AlertDialog showAndWait(){
+        getAlertStage().showAndWait();
+        return this;
+    }
+
     public void buttonCancel(){
         dialogButton = DialogButton.CANCEL;
         alertTitlePane.getScene().getWindow().hide();
@@ -136,13 +152,13 @@ public abstract class AlertDialog {
 
     private void japaneseFont(){
         alertMessage.getStyleClass().add("JapaneseFont");
-        alertTitle.getStyleClass().add("TopLabelJapanese");
+        alertTitle.getStyleClass().add("TopBarLabelJapanese");
         buttonCancel.getStyleClass().add("JapaneseFont");
     }
 
     private void westernFont(){
         alertMessage.getStyleClass().add("WesternFont");
-        alertTitle.getStyleClass().add("TopLabelWestern");
+        alertTitle.getStyleClass().add("TopBarLabelWestern");
         buttonCancel.getStyleClass().add("WesternFont");
     }
 

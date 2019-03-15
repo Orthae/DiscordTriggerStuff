@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -61,6 +62,8 @@ public abstract class AddEditBase {
     @FXML
     private BorderPane topLabelPane;
 
+    private Window owner;
+
     //  Getters
     public ComboBox<String> getTriggerTypeComboBox() {
         return triggerTypeComboBox;
@@ -108,6 +111,11 @@ public abstract class AddEditBase {
 
     public BorderPane getTopLabelPane() {
         return topLabelPane;
+    }
+
+    // Setters
+    public void setOwner(Window owner){
+        this.owner = owner;
     }
 
     //  Fields
@@ -206,7 +214,7 @@ public abstract class AddEditBase {
         if (isValid) {
             return true;
         } else {
-            AlertDialog.createErrorDialog().setAlertMessage(errorMessage.toString()).show();
+            AlertDialog.createErrorDialog().setAlertMessage(errorMessage.toString()).setOwner(owner).showAndWait();
             return false;
         }
     }
@@ -236,13 +244,13 @@ public abstract class AddEditBase {
 
     @FXML
     private void playButton() {
-        try {
-            if (radioButtonBeep.isSelected()) {
+         try {
+             if (radioButtonBeep.isSelected()) {
                 SoundManager.getInstance().playDebug(true, SoundManager.getInstance().DEFAULT_AUDIO_FILE);
                 return;
             }
             if (triggerSoundDataTField.getText().isEmpty()) {
-                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData")).show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData")).setOwner(owner).showAndWait();
             } else {
                 if (radioButtonTTS.isSelected()) {
                     VoiceManager.getInstance().debugTTS(triggerSoundDataTField.getText());
@@ -254,10 +262,10 @@ public abstract class AddEditBase {
                 }
             }
         } catch (AudioException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
+            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
             Logger.getInstance().log("AudioException thrown while playing audio in AddEditBase class" + e.getExceptionType().toString());
         } catch (VoiceException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
+            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
             Logger.getInstance().log("VoiceException thrown while getting TTS file in AddEditBase class " + e.getExceptionType().toString());
         }
     }

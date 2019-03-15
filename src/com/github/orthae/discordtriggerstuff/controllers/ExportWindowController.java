@@ -69,7 +69,7 @@ public class ExportWindowController extends ImportExportBase {
     public void exportACT() {
         Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
         if(!actConfig.toFile().exists()){
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).showAndWait();
             return;
         }
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -119,7 +119,7 @@ public class ExportWindowController extends ImportExportBase {
             bufferedWriter.write(stringBuilder.toString());
             bufferedWriter.close();
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).showAndWait();
             Logger.getInstance().log("Exporting to ACT failed, IO Exception");
         }
     }

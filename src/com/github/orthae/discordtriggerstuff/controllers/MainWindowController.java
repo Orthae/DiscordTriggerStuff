@@ -28,10 +28,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -204,6 +205,7 @@ public class MainWindowController {
     //  Fields
     private double xOffset = 0;
     private double yOffset = 0;
+    private Window owner;
 
     //  Methods
     private void actionListeners() {
@@ -605,6 +607,7 @@ public class MainWindowController {
 
     }
 
+    // TODO use ReusedCode
     private void moveWindowEventHandlerEnable() {
         topButtonBar.setOnMousePressed(event -> {
             xOffset = appWindow.getScene().getWindow().getX() - event.getScreenX();
@@ -821,7 +824,7 @@ public class MainWindowController {
                 DiscordManager.getInstance().logIn(Settings.getInstance().getDiscordToken());
             } catch (DiscordException e) {
                 Platform.runLater(() -> {
-                    AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
+                    AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
                     discordConnectButton.setDisable(false);
                 });
             }
@@ -870,10 +873,25 @@ public class MainWindowController {
 
     public void deleteTrigger() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() == 0) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected")).show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected")).setOwner(owner).showAndWait();
             return;
         } else {
-            if (AlertDialogs.deleteTriggersDialog(appWindow.getScene().getWindow(),triggerTableView.getSelectionModel().getSelectedItems().size()) == DialogButton.CANCEL) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP1"));
+            if (!Settings.getInstance().getLocale().equals(Language.Japanese)) {
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append(triggerTableView.getSelectionModel().getSelectedItems().size());
+            if (!Settings.getInstance().getLocale().equals(Language.Japanese)) {
+                stringBuilder.append(" ");
+            }
+            if (triggerTableView.getSelectionModel().getSelectedItems().size() == 1) {
+                stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP3"));
+            } else {
+                stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP2"));
+            }
+
+             if (AlertDialog.createConfirmDialog().setAlertMessage(stringBuilder.toString()).setOwner(owner).showAndWait().getDialogButton() == DialogButton.CANCEL) {
                 return;
             }
         }
@@ -898,6 +916,8 @@ public class MainWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        AddEditBase controller = fxmlLoader.getController();
+        controller.setOwner(controller.getRadioButtonBeep().getScene().getWindow());
         addEditWindow.showAndWait();
         reFiltering();
     }
@@ -924,7 +944,7 @@ public class MainWindowController {
             alert.setContentText(LanguageData.getInstance().getMsg("AlertVoiceWorks"));
             alert.show();
         } catch (VoiceException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
+            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
             Logger.getInstance().log("VoiceManager test failed: " + e.getExceptionType().toString());
         }
     }
@@ -936,11 +956,11 @@ public class MainWindowController {
                     URI link = new URI("https://discordapp.com/oauth2/authorize?client_id=" + Settings.getInstance().getClientID() + "&scope=bot");
                     Desktop.getDesktop().browse(link);
                 } else {
-                    AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordNoClientID")).show();
+                    AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordNoClientID")).setOwner(owner).showAndWait();
                     Logger.getInstance().log("Couldn't add bot to Discord, ClientID is not specified");
                 }
             } catch (IOException | URISyntaxException e) {
-                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot")).show();
+                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot")).setOwner(owner).showAndWait();
                 Logger.getInstance().log("Couldn't add bot to Discord, " + e.getMessage());
             }
         } else {
@@ -1060,9 +1080,9 @@ public class MainWindowController {
 //                                    getTableRow().getItem().debugTrigger();
                                 ((Trigger) getTableRow().getItem()).debugTrigger();
                             } catch (AudioException e) {
-                                AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
+                                AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
                             } catch (VoiceException e) {
-                                AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).show();
+                                AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
                             }
                         });
                         setGraphic(button);
@@ -1104,7 +1124,7 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             exportWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).setOwner(owner).showAndWait();
             Logger.getInstance().log("Couldn't load \"com.github.orthae.discordtriggerstuff.fxml/exportTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\" IOException");
         }
         exportWindow.showAndWait();
@@ -1119,7 +1139,7 @@ public class MainWindowController {
     }
 
     public void actSelectLogFile() {
-        LogReader.getInstance().manuallySelectLogFile(appWindow.getScene().getWindow());
+        LogReader.getInstance().manuallySelectLogFile(owner);
         logFileStatusLabelUpdate();
     }
 
@@ -1141,7 +1161,7 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             editWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).show();
+            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).setOwner(owner).showAndWait();
             Logger.getInstance().log("Couldn't load \"com.github.orthae.discordtriggerstuff.fxml/editTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\" IOException ");
         }
         EditTriggerController editTriggerController = fxmlLoader.getController();
@@ -1202,6 +1222,20 @@ public class MainWindowController {
 
 
     }
+
+    public Window getWindow(){
+        return this.appWindow.getScene().getWindow();
+    }
+
+    public void setOwner(Window window){
+        this.owner = window;
+    }
+
+
+
+
+
+
 
 
     private void westernFont() {

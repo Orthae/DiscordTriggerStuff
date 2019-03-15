@@ -151,7 +151,7 @@ public class LogReader {
     public void manuallySelectLogFile(Window window) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ACT Log File", "*.log"));
-        if (Settings.getInstance().getLogFolder() != null) {
+        if (Settings.getInstance().getLogFolder() != null &&   !Settings.getInstance().getLogFolder().isEmpty()){
             fileChooser.setInitialDirectory(new File(Settings.getInstance().getLogFolder()));
         }
         File file = fileChooser.showOpenDialog(window);
