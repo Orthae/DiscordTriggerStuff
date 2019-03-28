@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane stylesheets="@../skin.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.orthae.discordtriggerstuff.alerts.TextFieldDialog">
+    <top>
+        <BorderPane fx:id="alertTitlePane" styleClass="TopBarPane">
+            <center>
+                <Label fx:id="alertTitle" text="STUFF" styleClass="TopBarLabel"/>
+            </center>
+        </BorderPane>
+    </top>
+    <center>
+        <VBox styleClass="AlertDialogPane">
+            <HBox styleClass="AlertDialogDialogInnerPane">
+                <ImageView fx:id="imageViewIcon"/>
+                <VBox>
+                    <Label fx:id="alertMessage" text="A LABEL"/>
+                    <TextField fx:id="alertTextField"/>
+                </VBox>
+            </HBox>
+            <HBox styleClass="AlertDialogButtonBox">
+                <Button styleClass="AlertDialogDialogButton" fx:id="buttonCopyToClipboard" text="Copy" onAction="#buttonCopyToClipboard"/>
+                <Button styleClass="AlertDialogDialogButton" fx:id="buttonCancel" text="CANCEL" onAction="#buttonCancel"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
