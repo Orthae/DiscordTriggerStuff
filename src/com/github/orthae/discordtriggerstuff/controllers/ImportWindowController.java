@@ -84,7 +84,7 @@ public class ImportWindowController extends ImportExportBase {
             Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
             File actFile = new File(actConfig.toUri());
             if (!actFile.exists()) {
-                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).getAlertStage().show();
+                AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).getAlertStage().show();
                 Logger.getInstance().log("ACT config file not found");
                 return;
             }
@@ -125,11 +125,11 @@ public class ImportWindowController extends ImportExportBase {
             getImportExportTable().getItems().clear();
             Logger.getInstance().log("Exception thrown while reading ACT config file");
             Logger.getInstance().log(e.getMessage());
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportErrorWhileReading")).showAndWait();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertImportErrorWhileReading")).showAndWait();
         }
         if(getImportExportTable().getItems().isEmpty()){
             Logger.getInstance().log("Could not import triggers, import table is empty");
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).showAndWait();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).showAndWait();
         }
     }
 
@@ -188,12 +188,14 @@ public class ImportWindowController extends ImportExportBase {
         }
         catch(ParserConfigurationException | IOException | SAXException | UnsupportedFlavorException e){
             getImportExportTable().getItems().clear();
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).showAndWait();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).showAndWait();
             Logger.getInstance().log(e.getMessage() + " while importing triggers");
         }
         if (getImportExportTable().getItems().isEmpty()) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).showAndWait();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertImportTriggersNotFound")).showAndWait();
             Logger.getInstance().log("Could not import triggers, import table is empty");
         }
     }
+
+
 }

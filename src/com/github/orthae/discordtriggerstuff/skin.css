@@ -15,25 +15,25 @@
 
 /* CONFIRM DIALOG */        
 
-.ConfirmationDialogPane {
+.AlertDialogPane {
     -fx-background-color: -background-color-constant;
     -fx-alignment: TOP-CENTER;
     -fx-padding: 10 10 10 10;
     -fx-max-width: 650;
 }
 
-.ConfirmationDialogInnerPane {
+.AlertDialogDialogInnerPane {
     -fx-alignment: CENTER;
     -fx-spacing: 5;
     -fx-padding: 0 0 5 0;
 }
 
-.ConfirmationDialogButtonBox {
+.AlertDialogButtonBox {
     -fx-alignment: CENTER;
     -fx-spacing: 5;
 }
 
-.ConfirmationDialogButtons {
+.AlertDialogDialogButton {
     -fx-min-width: 80;
     -fx-min-height: 30;
 }

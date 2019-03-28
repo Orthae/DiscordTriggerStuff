@@ -12,6 +12,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Window;
 
 public class ImportExportBase {
     //  FXML block
@@ -47,6 +48,7 @@ public class ImportExportBase {
     //  Fields
     private double xOffset = 0;
     private double yOffset = 0;
+    private Window owner = null;
 
     //  Getters
     public TableView<Trigger> getImportExportTable() {
@@ -144,8 +146,8 @@ public class ImportExportBase {
         soundColumn.setCellFactory(param -> {
             Button button = new Button();
             button.getStyleClass().add("TablePlayButton");
-            javafx.scene.image.Image playButtonNotPressed = new javafx.scene.image.Image(getClass().getResourceAsStream("/com/github/orthae/discordtriggerstuff/img/play.png"));
-            javafx.scene.image.Image playButtonPressed = new Image(getClass().getResourceAsStream("/com/github/orthae/discordtriggerstuff/img/playpressed.png"));
+            Image playButtonNotPressed = new javafx.scene.image.Image(getClass().getResourceAsStream("/com/github/orthae/discordtriggerstuff/img/play.png"));
+            Image playButtonPressed = new Image(getClass().getResourceAsStream("/com/github/orthae/discordtriggerstuff/img/playpressed.png"));
             button.setGraphic(new ImageView(playButtonNotPressed));
             TableCell<Trigger, String> cell = new TableCell<Trigger, String>() {
                 @Override
@@ -249,5 +251,13 @@ public class ImportExportBase {
         languageSetup();
         windowMoving();
         tableInitialize();
+    }
+
+    public void setOwner(Window owner){
+        this.owner = owner;
+    }
+
+    public Window getOwner(){
+        return owner;
     }
 }

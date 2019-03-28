@@ -69,7 +69,7 @@ public class ExportWindowController extends ImportExportBase {
     public void exportACT() {
         Path actConfig = Paths.get(System.getenv("APPDATA"), "Advanced Combat Tracker/Config/Advanced Combat Tracker.config.xml");
         if(!actConfig.toFile().exists()){
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).showAndWait();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertImportExportACTNotFound")).showAndWait();
             return;
         }
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -119,7 +119,7 @@ public class ExportWindowController extends ImportExportBase {
             bufferedWriter.write(stringBuilder.toString());
             bufferedWriter.close();
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).showAndWait();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).showAndWait();
             Logger.getInstance().log("Exporting to ACT failed, IO Exception");
         }
     }
@@ -199,7 +199,7 @@ public class ExportWindowController extends ImportExportBase {
                 alert.show();
             }
         } catch (ParserConfigurationException | TransformerException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertExportFailed")).getAlertStage().show();
+            AlertDialog.createErrorDialog(getOwner()).setAlertMessage(LanguageData.getInstance().getMsg("AlertExportFailed")).getAlertStage().show();
             Logger.getInstance().log("Exporting triggers failed, this shouldn't happen");
         }
     }

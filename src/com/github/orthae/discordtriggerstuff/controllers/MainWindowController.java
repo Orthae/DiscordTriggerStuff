@@ -2,7 +2,6 @@ package com.github.orthae.discordtriggerstuff.controllers;
 
 import com.github.orthae.discordtriggerstuff.*;
 import com.github.orthae.discordtriggerstuff.alerts.AlertDialog;
-import com.github.orthae.discordtriggerstuff.alerts.AlertDialogs;
 import com.github.orthae.discordtriggerstuff.enums.DialogButton;
 import com.voicerss.tts.Languages;
 import com.github.orthae.discordtriggerstuff.enums.Language;
@@ -824,7 +823,7 @@ public class MainWindowController {
                 DiscordManager.getInstance().logIn(Settings.getInstance().getDiscordToken());
             } catch (DiscordException e) {
                 Platform.runLater(() -> {
-                    AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
+                    AlertDialog.createErrorDialog(owner).setAlertMessage(e.getAlertMessage()).showAndWait();
                     discordConnectButton.setDisable(false);
                 });
             }
@@ -864,16 +863,18 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             importTriggerWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).getAlertStage().show();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).getAlertStage().show();
             Logger.getInstance().log("IOException thrown while loading \"com.github.orthae.discordtriggerstuff.fxml/importTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\"");
         }
+        ImportWindowController controller = fxmlLoader.getController();
+        controller.setOwner(owner);
         importTriggerWindow.showAndWait();
         reFiltering();
     }
 
     public void deleteTrigger() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() == 0) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected")).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected")).showAndWait();
             return;
         } else {
             StringBuilder stringBuilder = new StringBuilder();
@@ -891,7 +892,7 @@ public class MainWindowController {
                 stringBuilder.append(LanguageData.getInstance().getMsg("tableDeleteConfirmP2"));
             }
 
-             if (AlertDialog.createConfirmDialog().setAlertMessage(stringBuilder.toString()).setOwner(owner).showAndWait().getDialogButton() == DialogButton.CANCEL) {
+             if (AlertDialog.createConfirmDialog(owner).setAlertMessage(stringBuilder.toString()).showAndWait().getDialogButton() == DialogButton.CANCEL) {
                 return;
             }
         }
@@ -944,27 +945,28 @@ public class MainWindowController {
             alert.setContentText(LanguageData.getInstance().getMsg("AlertVoiceWorks"));
             alert.show();
         } catch (VoiceException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(e.getAlertMessage()).showAndWait();
             Logger.getInstance().log("VoiceManager test failed: " + e.getExceptionType().toString());
         }
     }
 
     public void addBotToServer() {
-        if (Desktop.isDesktopSupported()) {
+        if (!Desktop.isDesktopSupported()) {
             try {
                 if (!discordClientIDTField.getText().trim().isEmpty()) {
                     URI link = new URI("https://discordapp.com/oauth2/authorize?client_id=" + Settings.getInstance().getClientID() + "&scope=bot");
                     Desktop.getDesktop().browse(link);
                 } else {
-                    AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordNoClientID")).setOwner(owner).showAndWait();
+                    AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordNoClientID")).showAndWait();
                     Logger.getInstance().log("Couldn't add bot to Discord, ClientID is not specified");
                 }
             } catch (IOException | URISyntaxException e) {
-                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot")).setOwner(owner).showAndWait();
+                AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBot")).showAndWait();
                 Logger.getInstance().log("Couldn't add bot to Discord, " + e.getMessage());
             }
         } else {
-            AlertDialogs.addBotDialog();
+            AlertDialog.createTextFieldDialog(owner).setAlertTextField("https://discordapp.com/oauth2/authorize?client_id=" + Settings.getInstance().getClientID() + "&scope=bot")
+                    .setAlertMessage(LanguageData.getInstance().getMsg("AlertDiscordCouldntAddBotBrowser")).showAndWait();
         }
     }
 
@@ -1080,9 +1082,9 @@ public class MainWindowController {
 //                                    getTableRow().getItem().debugTrigger();
                                 ((Trigger) getTableRow().getItem()).debugTrigger();
                             } catch (AudioException e) {
-                                AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
+                                AlertDialog.createErrorDialog(owner).setAlertMessage(e.getAlertMessage()).showAndWait();
                             } catch (VoiceException e) {
-                                AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
+                                AlertDialog.createErrorDialog(owner).setAlertMessage(e.getAlertMessage()).showAndWait();
                             }
                         });
                         setGraphic(button);
@@ -1124,9 +1126,11 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             exportWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).showAndWait();
             Logger.getInstance().log("Couldn't load \"com.github.orthae.discordtriggerstuff.fxml/exportTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\" IOException");
         }
+        ExportWindowController controller = fxmlLoader.getController();
+        controller.setOwner(owner);
         exportWindow.showAndWait();
     }
 
@@ -1145,11 +1149,11 @@ public class MainWindowController {
 
     public void editTriggerButton() {
         if (triggerTableView.getSelectionModel().getSelectedItems().size() > 1) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertTableToManySelected")).getAlertStage().show();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertTableToManySelected")).getAlertStage().show();
             return;
         }
         if (triggerTableView.getSelectionModel().getSelectedItems().isEmpty()) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected")).getAlertStage().show();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertTableNoItemSelected")).getAlertStage().show();
             return;
         }
         Stage editWindow = new Stage();
@@ -1161,7 +1165,7 @@ public class MainWindowController {
             Parent root = fxmlLoader.load();
             editWindow.setScene(new Scene(root));
         } catch (IOException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertIOException")).showAndWait();
             Logger.getInstance().log("Couldn't load \"com.github.orthae.discordtriggerstuff.fxml/editTriggerWindow.com.github.orthae.discordtriggerstuff.fxml\" IOException ");
         }
         EditTriggerController editTriggerController = fxmlLoader.getController();
@@ -1216,9 +1220,9 @@ public class MainWindowController {
         logFileStatusLabelUpdate();
     }
 
-    public void deleteCachedSounds(){
-//        AlertDialogs.confirmDialog(appWindow.getScene().getWindow());
 
+    // TODO
+    public void deleteCachedSounds(){
 
 
     }

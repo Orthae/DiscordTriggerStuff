@@ -214,7 +214,7 @@ public abstract class AddEditBase {
         if (isValid) {
             return true;
         } else {
-            AlertDialog.createErrorDialog().setAlertMessage(errorMessage.toString()).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(errorMessage.toString()).showAndWait();
             return false;
         }
     }
@@ -250,7 +250,7 @@ public abstract class AddEditBase {
                 return;
             }
             if (triggerSoundDataTField.getText().isEmpty()) {
-                AlertDialog.createErrorDialog().setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData")).setOwner(owner).showAndWait();
+                AlertDialog.createErrorDialog(owner).setAlertMessage(LanguageData.getInstance().getMsg("AlertValidateSoundData")).showAndWait();
             } else {
                 if (radioButtonTTS.isSelected()) {
                     VoiceManager.getInstance().debugTTS(triggerSoundDataTField.getText());
@@ -262,10 +262,10 @@ public abstract class AddEditBase {
                 }
             }
         } catch (AudioException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(e.getAlertMessage()).showAndWait();
             Logger.getInstance().log("AudioException thrown while playing audio in AddEditBase class" + e.getExceptionType().toString());
         } catch (VoiceException e) {
-            AlertDialog.createErrorDialog().setAlertMessage(e.getAlertMessage()).setOwner(owner).showAndWait();
+            AlertDialog.createErrorDialog(owner).setAlertMessage(e.getAlertMessage()).showAndWait();
             Logger.getInstance().log("VoiceException thrown while getting TTS file in AddEditBase class " + e.getExceptionType().toString());
         }
     }

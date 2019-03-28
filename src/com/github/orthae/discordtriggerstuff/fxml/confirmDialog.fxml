@@ -13,14 +13,14 @@
         </BorderPane>
     </top>
     <center>
-        <VBox styleClass="ConfirmationDialogPane">
-            <HBox styleClass="ConfirmationDialogInnerPane">
+        <VBox styleClass="AlertDialogPane">
+            <HBox styleClass="AlertDialogDialogInnerPane">
                 <ImageView fx:id="imageViewIcon"/>
                 <Label fx:id="alertMessage" text="A LABEL"/>
             </HBox>
-            <HBox styleClass="ConfirmationDialogButtonBox">
-                <Button styleClass="ConfirmationDialogButtons" fx:id="buttonConfirm" text="CONFIRM" onAction="#buttonAccepted"/>
-                <Button styleClass="ConfirmationDialogButtons" fx:id="buttonCancel" text="CANCEL" onAction="#buttonCancel"/>
+            <HBox styleClass="AlertDialogButtonBox">
+                <Button styleClass="AlertDialogDialogButton" fx:id="buttonConfirm" text="CONFIRM" onAction="#buttonAccepted"/>
+                <Button styleClass="AlertDialogDialogButton" fx:id="buttonCancel" text="CANCEL" onAction="#buttonCancel"/>
             </HBox>
         </VBox>
     </center>

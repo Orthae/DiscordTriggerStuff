@@ -58,10 +58,16 @@ public abstract class AlertDialog {
         alertMessage.setText(string);
         return this;
     }
+
+
+    @SuppressWarnings("UnusedReturnValue")
     public AlertDialog setIcon(InputStream inputStream){
         imageViewIcon.setImage(new Image(inputStream));
         return this;
+
     }
+
+    @SuppressWarnings("UnusedReturnValue")
     public AlertDialog setAlertTitle(String string){
         alertTitle.setText(string);
         return this;
@@ -71,19 +77,13 @@ public abstract class AlertDialog {
         buttonCancel.setText(string);
     }
 
-    public AlertDialog setOwner(Window owner){
-        getAlertStage().initOwner(owner);
-        return this;
-    }
-
     public void setDialogButton(DialogButton dialogButton){
         this.dialogButton = dialogButton;
     }
 
 
     // Factory methods
-    // TODO rework to accept Window as arg and remove setOwner
-    public static AlertDialog createErrorDialog(){
+    public static ErrorAlertDialog createErrorDialog(Window owner){
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.UNDECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -101,8 +101,7 @@ public abstract class AlertDialog {
         return dialog;
     }
 
-
-    public static AlertDialog createConfirmDialog(){
+    public static ConfirmAlertDialog createConfirmDialog(Window owner){
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.UNDECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -112,8 +111,26 @@ public abstract class AlertDialog {
             dialogStage.setScene(new Scene(root));
         } catch (IOException e) {
             Logger.getInstance().log("IO error while creating confirm dialog");
-        }
+          }
         ConfirmAlertDialog dialog = fxmlLoader.getController();
+        ReusedCode.enableWindowMoving(dialog.getTitlePane());
+        dialogStage.toFront();
+        dialog.setAlertStage(dialogStage);
+        return dialog;
+    }
+
+    public static TextFieldDialog createTextFieldDialog(Window owner){
+        Stage dialogStage = new Stage();
+        dialogStage.initStyle(StageStyle.UNDECORATED);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(AlertDialog.class.getResource("/com/github/orthae/discordtriggerstuff/fxml/textFieldDialog.fxml"));
+        try{
+            Parent root = fxmlLoader.load();
+            dialogStage.setScene(new Scene(root));
+        } catch (IOException e ){
+            Logger.getInstance().log("IO error while creating text field dialog");
+        }
+        TextFieldDialog dialog = fxmlLoader.getController();
         ReusedCode.enableWindowMoving(dialog.getTitlePane());
         dialogStage.toFront();
         dialog.setAlertStage(dialogStage);
@@ -123,9 +140,10 @@ public abstract class AlertDialog {
     // Class methods
     public void initialize(){
         languageSetup();
-
     }
 
+
+    @SuppressWarnings("unused")
     public void show(){
         getAlertStage().show();
     }
@@ -146,9 +164,7 @@ public abstract class AlertDialog {
         } else {
             westernFont();
         }
-
     }
-
 
     private void japaneseFont(){
         alertMessage.getStyleClass().add("JapaneseFont");

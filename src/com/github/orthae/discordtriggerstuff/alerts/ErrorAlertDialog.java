@@ -9,13 +9,11 @@ public class ErrorAlertDialog extends AlertDialog {
         super.initialize();
         setIcon(getClass().getResourceAsStream("/com/github/orthae/discordtriggerstuff/img/delete_32.png"));
         languageSetup();
-//        textLabel.setWrapText(true);
     }
 
     private void languageSetup(){
         setAlertTitle(LanguageData.getInstance().getMsg("AlertError"));
         setButtonCancel(LanguageData.getInstance().getMsg("ButtonAddEditCancel"));
-
     }
 
 
